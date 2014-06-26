@@ -31,14 +31,16 @@
 - (void)loadPage
 {
 	BOOL iPhone5 = UIUtil::IsPhone5();
-	UIImage *image = UIUtil::Image(@"Icon");
+	UIImage *image = [UIImage imageNamed:@"Icon"];
 	_logoButton = [UIButton buttonWithImage:image];
+	_logoButton.layer.cornerRadius = 8;
+	_logoButton.clipsToBounds = YES;
 	[_logoButton addTarget:self action:@selector(logoButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-	_logoButton.center = CGPointMake(160, (iPhone5 ? 20 : 6) + image.size.height / 2);
+	_logoButton.center = CGPointMake(1024/2, (iPhone5 ? 20 : 6) + image.size.height / 2);
 	[self addView:_logoButton];
 	
-	UILabel *label = UIUtil::LabelWithFrame(CGRectMake(10, _contentHeight + 4, 300, iPhone5 ? 40 : 20)
-											, [NSString stringWithFormat:@"版本 %@ %@© CeleWare", NSUtil::BundleVersion(), (iPhone5 ? @"\n" : @" ")]
+	UILabel *label = UIUtil::LabelWithFrame(CGRectMake((1024-300)/2, _contentHeight + 4, 300, iPhone5 ? 40 : 20)
+											, [NSString stringWithFormat:NSLocalizedString(@"Version %@ %@© %@", @"版本 %@ %@© %@"), NSUtil::BundleVersion(), (iPhone5 ? @"\n" : @" "), NSUtil::BundleDisplayName()]
 											, [UIFont systemFontOfSize:15]
 											, [UIColor darkGrayColor]
 											, NSTextAlignmentCenter);
@@ -54,19 +56,9 @@
 	}
 	
 	{
-//		if (DataLoader.isLogon)
-//		{
-//			BOOL enabled = [Settings::Get(kDeviceBinded) boolValue];
-//			[self cellButtonWithName:@"推送状态"
-//							  detail:enabled ? nil : @"请在系统通知中心开启"
-//							   title:enabled ? @"已开启" : @"已关闭"
-//							  action:nil//@selector(pushButtonClicked:)
-//							   width:56].enabled = NO;
-//		}
-		
-		[self cellButtonWithName:@"网络缓存"
+		[self cellButtonWithName:NSLocalizedString(@"Network Cache", @"网络缓存")
 						  detail:[NSString stringWithFormat:@"%.2f MB", float(NSUtil::CacheSize() / 1024.0 / 1024.0)]
-						   title:@"清除"
+						   title:NSLocalizedString(@"Clean", @"清除")
 						  action:@selector(clearButtonClicked:)
 						   width:56];
 	}
@@ -74,29 +66,33 @@
 	if (DataLoader.isLogon)
 	{
 		//self.navigationItem.rightBarButtonItem = [UIBarButtonItem _buttonItemWithTitle: target:self action:@selector(logoutButtonClicked:)];
-		[self majorButtonWithTitle:@"安全退出" action:@selector(logoutButtonClicked:)];
-
+		[self majorButtonWithTitle:NSLocalizedString(@"Logout", @"安全退出") action:@selector(logoutButtonClicked:)];
+		
 		if (!iPhone5) [self spaceWithHeight:-3];
 	}
-
+	
 	[self spaceWithHeight:kDefaultHeaderHeight];
 	{
-		[self cellWithName:@"给个好评" detail:nil action:@selector(starButtonClicked:)];
-		[self cellWithName:@"关于" detail:nil action:@selector(logoButtonClicked:)];
+		[self cellWithName:NSLocalizedString(@"Rate Me", @"给个好评") detail:nil action:@selector(starButtonClicked:)];
+		[self cellWithName:NSLocalizedString(@"About", @"关于") detail:nil action:@selector(logoButtonClicked:)];
 	}
-
+	
 	if (!iPhone5) [self spaceWithHeight:-10];
 }
 
 #pragma mark Event methods
 
 //
-#define kClearCacheAlertViewTag 12517
+#define kCleanCacheAlertViewTag 12517
 - (void)clearButtonClicked:(UIButton *)sender
 {
-	_cacheCell = (WizardCell *)sender.superview;
-	UIAlertView *alertView = UIUtil::ShowAlert(@"清除缓存", @"你确定要清除网络缓存吗？", self, @"取消", @"清除");
-	alertView.tag = kClearCacheAlertViewTag;
+	UIAlertView *alertView = UIUtil::ShowAlert(NSLocalizedString(@"Clean Cache", @"清除缓存"),
+											   NSLocalizedString(@"Are you sure to clear cache?", @"你确定要清除网络缓存吗？"),
+											   self,
+											   NSLocalizedString(@"Cancel", @"取消"),
+											   NSLocalizedString(@"Clean", @"清除"));
+	objc_setAssociatedObject(alertView, (__bridge void *)@"SENDER", sender, OBJC_ASSOCIATION_ASSIGN);
+	alertView.tag = kCleanCacheAlertViewTag;
 }
 
 //
@@ -108,7 +104,7 @@
 //
 - (void)logoutButtonClicked:(id)sender
 {
-	UIUtil::ShowAlert(@"注销", @"你要退出当前账户吗?", self, @"取消", @"确定");
+	UIUtil::ShowAlert(NSLocalizedString(@"Logout", @"注销"), NSLocalizedString(@"Are you sure to logout?", @"你要退出当前账户吗?"), self, NSLocalizedString(@"Cancel", @"取消"), NSLocalizedString(@"OK", @"确定"));
 }
 
 //
@@ -116,12 +112,13 @@
 {
 	if (buttonIndex == alertView.cancelButtonIndex) return;
 	
-	if (alertView.tag == kClearCacheAlertViewTag)
+	if (alertView.tag == kCleanCacheAlertViewTag)
 	{
-		NSUtil::ClearCache();
-		_cacheCell.detail = nil;
-		UIButton *button = (UIButton *)_cacheCell.accessoryView;
-		[button setTitle:@"已清除" forState:UIControlStateNormal];
+		NSUtil::CleanCache();
+		WizardCell *cell = (WizardCell *)[objc_getAssociatedObject(alertView, (__bridge void *)@"SENDER") superview];
+		cell.detail = nil;
+		UIButton *button = (UIButton *)cell.accessoryView;
+		[button setTitle:NSLocalizedString(@"Cleansed", @"已清除") forState:UIControlStateNormal];
 		button.enabled = NO;
 		return;
 	}
@@ -131,20 +128,19 @@
 }
 
 //
-#define kSloganFromViewTag 12821
 - (void)logoButtonClicked:(UIView *)sender
 {
 	UIUtil::ShowStatusBar(NO, UIStatusBarAnimationSlide);
 	
-	UIImage *image = [UIImage imageNamed:UIUtil::IsPhone5() ? @"Default-568h" : @"Default"];
+	UIImage *image = [UIImage imageNamed:UIUtil::IsPad() ? @"DefaultPad" : (UIUtil::IsPhone5() ? @"Default-568h" : @"Default")];
 	UIButton *button = [UIButton buttonWithImage:image];
 	[button setImage:image forState:UIControlStateHighlighted];
 	[button addTarget:self action:@selector(sloganButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-	button.tag = sender.tag = kSloganFromViewTag;
+	objc_setAssociatedObject(button, (__bridge void *)@"SENDER", sender, OBJC_ASSOCIATION_ASSIGN);
 	[self.view.window addSubview:button];
 	
 	CGRect frame = button.frame;
-	button.frame = [self.navigationController.view convertRect:sender.frame fromView:self.view];
+	button.frame = [self.view.window convertRect:sender.frame fromView:sender.superview];
 	button.alpha = 0;
 	[UIView animateWithDuration:0.4 animations:^()
 	 {
@@ -160,7 +156,8 @@
 	[UIView animateWithDuration:0.4 animations:^()
 	 {
 		 sender.alpha = 0;
-		 sender.frame = [self.navigationController.view convertRect:[_contentView viewWithTag:kSloganFromViewTag].frame fromView:self.view];;
+		 UIView *to = objc_getAssociatedObject(sender, (__bridge void *)@"SENDER");
+		 sender.frame = [self.view.window convertRect:to.frame fromView:to.superview];;
 	 } completion:^(BOOL finished)
 	 {
 		 [sender removeFromSuperview];

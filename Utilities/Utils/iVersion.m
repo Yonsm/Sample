@@ -53,7 +53,7 @@
 #define iVersionInThisVersionTitle		NSLocalizedString(@"New in this version", @"更新说明")
 #define iVersionUpdateAvailableTitle	NSLocalizedString(@"New version available", @"有新的版本")
 #define iVersionVersionLabelFormat		NSLocalizedString(@"Version %@", @"版本 %@")
-#define iVersionOKButtonLabel			NSLocalizedString(@"OK", @"好的")
+#define iVersionOKButtonLabel			NSLocalizedString(@"OK", @"确定")
 #define iVersionIgnoreButtonLabel		NSLocalizedString(@"Ignore", @"忽略")
 #define iVersionRemindButtonLabel		NSLocalizedString(@"Remind Me Later", @"以后再说")
 #define iVersionDownloadButtonLabel		NSLocalizedString(@"Download", @"立即下载")
@@ -143,7 +143,7 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
         sharedInstance = [[iVersion alloc] init];
 #ifdef iVersionRemotePlistURL
 		iVersion.sharedInstance.remoteVersionsPlistURL = iVersionRemotePlistURL;
-		iVersion.sharedInstance.updateURL = [NSURL URLWithString:[@"itms-services://?action=download-manifest&url=%" stringByAppendingString:iVersionUpdateURL]];
+		iVersion.sharedInstance.updateURL = [NSURL URLWithString:[@"itms-services://?action=download-manifest&url=" stringByAppendingString:iVersionUpdateURL]];
 #endif
     }
     return sharedInstance;

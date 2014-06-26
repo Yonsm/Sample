@@ -427,31 +427,17 @@ public:
 	
 #pragma mark UIAlertView methods
 	//
-	NS_INLINE UIAlertView *ShowAlert(NSString *title, NSString *message, id delegate, NSString *cancelButtonTitle, NSString *otherButtonTitles, ...)
+	NS_INLINE UIAlertView *ShowAlert(NSString *title, NSString *message = nil, id delegate = nil, NSString *cancelButtonTitle = NSLocalizedString(@"Dismiss", @"关闭"), NSString *otherButtonTitle = nil, NSString *otherButtonTitle2 = nil, NSString *otherButtonTitle3 = nil, NSString *otherButtonTitle4 = nil)
 	{
-		va_list arg;
-		va_start(arg, otherButtonTitles);
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
 															message:message
 														   delegate:delegate
 												  cancelButtonTitle:cancelButtonTitle
-												  otherButtonTitles:otherButtonTitles,
-								  va_arg(arg, NSString *),
-								  va_arg(arg, NSString *),
-								  va_arg(arg, NSString *),
-								  va_arg(arg, NSString *),
-								  nil];
-		va_end(arg);
+												  otherButtonTitles:otherButtonTitle, otherButtonTitle2, otherButtonTitle3, otherButtonTitle4, nil];
 		[alertView show];
 		return alertView;
 	}
-	
-	//
-	NS_INLINE UIAlertView *ShowAlert(NSString *title, NSString *message = nil, id delegate = nil, NSString *cancelButtonTitle = NSLocalizedString(@"Dismiss", @"关闭"))
-	{
-		return ShowAlert(title, message, delegate, cancelButtonTitle, nil);
-	}
-	
+
 	//
 #define kActivityIndicatorTag 1924
 	NS_INLINE UIActivityIndicatorView *AlertActivityIndicator(UIAlertView *self)

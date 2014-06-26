@@ -165,7 +165,7 @@ public:
 	}
 	
 	//
-	NS_INLINE void ClearCache()
+	NS_INLINE void CleanCache()
 	{
 		[FileManager() removeItemAtPath:CachePath() error:nil];
 	}

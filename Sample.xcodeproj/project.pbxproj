@@ -565,14 +565,14 @@
 				24259F23194AB539000FF8A9 /* Prefix.pch */,
 				24259EF9194AB539000FF8A9 /* AppDelegate.h */,
 				24259EFA194AB539000FF8A9 /* AppDelegate.mm */,
-				24259EFB194AB539000FF8A9 /* Controller */,
-				24259F16194AB539000FF8A9 /* Model */,
-				24259F24194AB539000FF8A9 /* View */,
+				24259EFB194AB539000FF8A9 /* Controllers */,
+				24259F16194AB539000FF8A9 /* Models */,
+				24259F24194AB539000FF8A9 /* Views */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		24259EFB194AB539000FF8A9 /* Controller */ = {
+		24259EFB194AB539000FF8A9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				24259EFC194AB539000FF8A9 /* Auth */,
@@ -584,7 +584,7 @@
 				24259F14194AB539000FF8A9 /* SettingController.h */,
 				24259F15194AB539000FF8A9 /* SettingController.mm */,
 			);
-			path = Controller;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		24259EFC194AB539000FF8A9 /* Auth */ = {
@@ -601,25 +601,25 @@
 		24259F01194AB539000FF8A9 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				24259F02194AB539000FF8A9 /* AutoWizardController.h */,
-				24259F03194AB539000FF8A9 /* AutoWizardController.mm */,
 				24259F04194AB539000FF8A9 /* BaseController.h */,
 				24259F05194AB539000FF8A9 /* BaseController.mm */,
-				24259F06194AB539000FF8A9 /* PagingTableController.h */,
-				24259F07194AB539000FF8A9 /* PagingTableController.mm */,
-				24259F08194AB539000FF8A9 /* PullTableController.h */,
-				24259F09194AB539000FF8A9 /* PullTableController.mm */,
-				24259F0A194AB539000FF8A9 /* PullWizardController.h */,
-				24259F0B194AB539000FF8A9 /* PullWizardController.mm */,
 				24259F0C194AB539000FF8A9 /* TableController.h */,
 				24259F0D194AB539000FF8A9 /* TableController.mm */,
+				24259F08194AB539000FF8A9 /* PullTableController.h */,
+				24259F09194AB539000FF8A9 /* PullTableController.mm */,
+				24259F06194AB539000FF8A9 /* PagingTableController.h */,
+				24259F07194AB539000FF8A9 /* PagingTableController.mm */,
 				24259F0E194AB539000FF8A9 /* WizardController.h */,
 				24259F0F194AB539000FF8A9 /* WizardController.mm */,
+				24259F02194AB539000FF8A9 /* AutoWizardController.h */,
+				24259F03194AB539000FF8A9 /* AutoWizardController.mm */,
+				24259F0A194AB539000FF8A9 /* PullWizardController.h */,
+				24259F0B194AB539000FF8A9 /* PullWizardController.mm */,
 			);
 			path = Base;
 			sourceTree = "<group>";
 		};
-		24259F16194AB539000FF8A9 /* Model */ = {
+		24259F16194AB539000FF8A9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				24259F17194AB539000FF8A9 /* AutoPullDataLoader.h */,
@@ -635,10 +635,10 @@
 				24259F21194AB539000FF8A9 /* PullDataLoader.h */,
 				24259F22194AB539000FF8A9 /* PullDataLoader.mm */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		24259F24194AB539000FF8A9 /* View */ = {
+		24259F24194AB539000FF8A9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				24259F25194AB539000FF8A9 /* AlertView.h */,
@@ -654,7 +654,7 @@
 				24259F2F194AB539000FF8A9 /* WizardCell.h */,
 				24259F30194AB539000FF8A9 /* WizardCell.mm */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		246A318718682C2D00903EF4 = {
