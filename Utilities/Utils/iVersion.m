@@ -123,6 +123,13 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
 
 @implementation iVersion
 
+//
+#ifdef iVersionGitHubName
+#define iVersionBundleName		[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]
+#define iVersionRemotePlistURL	[NSString stringWithFormat:@"https://raw.githubusercontent.com/%@/%@/master/Release/iVersion.plist", iVersionGitHubName, iVersionBundleName]
+#define iVersionUpdateURL		[NSString stringWithFormat:@"https://raw.githubusercontent.com/%@/%@/master/Release/%@.plist", iVersionGitHubName, iVersionBundleName, iVersionBundleName]
+#endif
+
 + (void)load
 {
     [self performSelectorOnMainThread:@selector(sharedInstance) withObject:nil waitUntilDone:NO];
@@ -134,6 +141,10 @@ static NSString *const iVersionMacAppStoreURLFormat = @"macappstore://itunes.app
     if (sharedInstance == nil)
     {
         sharedInstance = [[iVersion alloc] init];
+#ifdef iVersionRemotePlistURL
+		iVersion.sharedInstance.remoteVersionsPlistURL = iVersionRemotePlistURL;
+		iVersion.sharedInstance.updateURL = [NSURL URLWithString:[@"itms-services://?action=download-manifest&url=%" stringByAppendingString:iVersionUpdateURL]];
+#endif
     }
     return sharedInstance;
 }
