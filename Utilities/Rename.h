@@ -52,14 +52,14 @@
 #define MailComposer				REMailComposer
 #define WeiboComposer				REWeiboComposer
 #define FacebookComposer			REFacebookComposer
-#define composeSMS					REcomposeSMS
-#define composeMail					REcomposeMail
-#define composeWeibo				REcomposeWeibo
-#define composeFacebook				REcomposeFacebook
+#define composeSMS					reComposeSMS
+#define composeMail					reComposeMail
+#define composeWeibo				reComposeWeibo
+#define composeFacebook				reComposeFacebook
 
 // UIViewController	(EXViewController)
-#define dismissModalViewController	REdismissModalViewController
+#define dismissModalViewController	reDismissModalViewController
 
 // UIView (CacheImage)
-#define cacheImageUrl				REcacheImageUrl
-#define setCacheImageUrl			REsetCacheImageUrl
+#define cacheImageUrl				reCacheImageUrl
+#define setCacheImageUrl			setReCacheImageUrl
