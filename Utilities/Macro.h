@@ -19,42 +19,13 @@
 #endif
 #define _LogObj(o)		if (o) _Log(@"Object Log: %s (%u), %@ (%@)", __FUNCTION__, __LINE__, NSStringFromClass([o class]), o)
 #define _LogLine()		_Log(@"Line Log: %s (%u)", __FUNCTION__, __LINE__)
-#ifdef __cplusplus
-#define _LogAuto()		__AutoLog _al(__FUNCTION__, __LINE__)
-#else
-#define _LogAuto()		_LogLine()
-#endif
 #import <dlfcn.h>
 #define _LogStack()		{Dl_info info = {0}; dladdr(__builtin_return_address(0), &info); _Log(@"Stack Log: fname=%s, fbase=%p, sname=%s, saddr=%p, offset=%#08lx, stack=>\n%@", info.dli_fname, info.dli_fbase, info.dli_sname, info.dli_saddr, (long)info.dli_saddr-(long)info.dli_fbase-0x1000, [NSThread callStackSymbols]);}
 #else
 #define _Log(s, ...)	((void) 0)
 #define _LogLine()		((void) 0)
-#define _LogAuto()		((void) 0)
 #define _LogObj(o)		((void) 0)
 #define _LogStack()		((void) 0)
-#endif
-
-// Auto Log
-#ifdef __cplusplus
-#import <Foundation/Foundation.h>
-#import <mach/mach_time.h>
-#import <objc/runtime.h>
-class __AutoLog
-{
-private:
-	int _line;
-	uint64_t _start;
-	const char *_name;
-public:
-	inline __AutoLog(const char *name, int line): _line(line), _name(name), _start(mach_absolute_time())
-	{
-		_Log(@"Enter %s:%d", name, line);
-	}
-	inline ~__AutoLog()
-	{
-		_Log(@"Leave %s:%d Elapsed %qu", _name, _line, mach_absolute_time() - _start);
-	}
-};
 #endif
 
 // Suppress warning
@@ -78,4 +49,10 @@ _Pragma("clang diagnostic pop")
 #define NSLocalizedString(key, comment) [[NSBundle mainBundle] localizedStringForKey:(key) value:(comment) table:nil]
 #else
 #define NSLocalizedString(key, comment) [[NSBundle mainBundle] localizedStringForKey:(key) value:(key) table:nil]
+#endif
+
+#ifdef kAssetBundle
+#define BundleImage(name)	[UIImage imageNamed:[kAssetBundle stringByAppendingPathComponent:name]]
+#else
+#define BundleImage(name)	[UIImage imageNamed:name]
 #endif
