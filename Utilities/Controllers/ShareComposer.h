@@ -1,6 +1,6 @@
 
 
-#import "WebController.h"
+#import "WebBrowser.h"
 
 // 
 @interface WeiboComposer : WebBrowser

@@ -21,12 +21,3 @@
 - (void)loadHTML:(NSString *)HTML baseURL:(NSURL *)baseURL;
 
 @end
-
-
-//
-@interface WebBrowser : WebController
-{
-	BOOL _toolBarHidden;
-}
-
-@end

@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		240F9A4219CBD403000A9B64 /* UIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E80194AB36B000FF8A9 /* UIUtil.m */; };
+		240F9A4519CBD499000A9B64 /* WebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 240F9A4419CBD499000A9B64 /* WebBrowser.m */; };
 		24259EB2194AB36B000FF8A9 /* MessageComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E25194AB36B000FF8A9 /* MessageComposer.m */; };
-		24259EB3194AB36B000FF8A9 /* MoviePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E27194AB36B000FF8A9 /* MoviePlayer.m */; };
 		24259EB4194AB36B000FF8A9 /* NullController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E29194AB36B000FF8A9 /* NullController.m */; };
 		24259EB5194AB36B000FF8A9 /* ShareComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E2B194AB36B000FF8A9 /* ShareComposer.m */; };
 		24259EB6194AB36B000FF8A9 /* WebController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E2D194AB36B000FF8A9 /* WebController.m */; };
@@ -86,10 +86,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		240F9A4319CBD499000A9B64 /* WebBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebBrowser.h; sourceTree = "<group>"; };
+		240F9A4419CBD499000A9B64 /* WebBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebBrowser.m; sourceTree = "<group>"; };
 		24259E24194AB36B000FF8A9 /* MessageComposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageComposer.h; sourceTree = "<group>"; };
 		24259E25194AB36B000FF8A9 /* MessageComposer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageComposer.m; sourceTree = "<group>"; };
-		24259E26194AB36B000FF8A9 /* MoviePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePlayer.h; sourceTree = "<group>"; };
-		24259E27194AB36B000FF8A9 /* MoviePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayer.m; sourceTree = "<group>"; };
 		24259E28194AB36B000FF8A9 /* NullController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NullController.h; sourceTree = "<group>"; };
 		24259E29194AB36B000FF8A9 /* NullController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullController.m; sourceTree = "<group>"; };
 		24259E2A194AB36B000FF8A9 /* ShareComposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareComposer.h; sourceTree = "<group>"; };
@@ -324,16 +324,16 @@
 		24259E23194AB36B000FF8A9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				24259E24194AB36B000FF8A9 /* MessageComposer.h */,
-				24259E25194AB36B000FF8A9 /* MessageComposer.m */,
-				24259E26194AB36B000FF8A9 /* MoviePlayer.h */,
-				24259E27194AB36B000FF8A9 /* MoviePlayer.m */,
 				24259E28194AB36B000FF8A9 /* NullController.h */,
 				24259E29194AB36B000FF8A9 /* NullController.m */,
 				24259E2A194AB36B000FF8A9 /* ShareComposer.h */,
 				24259E2B194AB36B000FF8A9 /* ShareComposer.m */,
+				24259E24194AB36B000FF8A9 /* MessageComposer.h */,
+				24259E25194AB36B000FF8A9 /* MessageComposer.m */,
 				24259E2C194AB36B000FF8A9 /* WebController.h */,
 				24259E2D194AB36B000FF8A9 /* WebController.m */,
+				240F9A4319CBD499000A9B64 /* WebBrowser.h */,
+				240F9A4419CBD499000A9B64 /* WebBrowser.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -783,6 +783,7 @@
 				24259ECC194AB36B000FF8A9 /* UMEGORefreshTableHeaderView.m in Sources */,
 				24259EBD194AB36B000FF8A9 /* HPTextViewInternal.m in Sources */,
 				24259EE3194AB36B000FF8A9 /* PullView.m in Sources */,
+				240F9A4519CBD499000A9B64 /* WebBrowser.m in Sources */,
 				24259EE0194AB36B000FF8A9 /* NullView.m in Sources */,
 				24259F47194AB539000FF8A9 /* SelectPicker.m in Sources */,
 				24259EBC194AB36B000FF8A9 /* HPGrowingTextView.m in Sources */,
@@ -797,7 +798,6 @@
 				24259F31194AB539000FF8A9 /* AppDelegate.m in Sources */,
 				24259EDA194AB36B000FF8A9 /* AnimatableLabel.m in Sources */,
 				24259ED8194AB36B000FF8A9 /* SystemUtil.mm in Sources */,
-				24259EB3194AB36B000FF8A9 /* MoviePlayer.m in Sources */,
 				24259ED5194AB36B000FF8A9 /* NSUtil.m in Sources */,
 				24259EB4194AB36B000FF8A9 /* NullController.m in Sources */,
 				24259EE6194AB36B000FF8A9 /* TouchView.m in Sources */,
