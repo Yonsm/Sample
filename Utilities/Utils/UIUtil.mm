@@ -196,7 +196,7 @@ UIImageView *UIUtil::ShowSplashView(UIView *fadeInView, CGFloat duration)
 }
 
 //
-UIImage *UIUtil::ImageWithColor(UIColor *color, CGSize size)
+UIImage *UIImageBundledWithColor(UIColor *color, CGSize size)
 {
 	UIGraphicsBeginImageContext(size);
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -361,7 +361,7 @@ UIImage *UIUtil::MaskImage(UIImage * self ,UIImage *mask)
 }
 
 //
-CGAffineTransform UIUtil::ImageOrientation(UIImage *self, CGSize *newSize)
+CGAffineTransform UIImageBundledOrientation(UIImage *self, CGSize *newSize)
 {
 	CGImageRef img = self.CGImage;
 	CGFloat width = CGImageGetWidth(img);
@@ -684,7 +684,7 @@ UIImage *UIUtil::BlurImage(UIImage *image, CGRect bounds, CGSize size, CGFloat b
 #endif
 
 //
-UIView *UIUtil::FindFirstResponder(UIView *self)
+UIView *UIFindFirstResponder(UIView *self)
 {
 	if ([self isFirstResponder])
 	{

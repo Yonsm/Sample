@@ -12,8 +12,8 @@
 	frame.size.width += 2;
 	if (frame.size.height < 22) frame.size.height = 22;
 	UIButton *button = [[UIButton alloc] initWithFrame:frame];
-	[button setTitleColor:UIUtil::Color(0x4d4b47) forState:UIControlStateNormal];
-	[button setTitleColor:UIUtil::Color(0x807e7a) forState:UIControlStateHighlighted];
+	[button setTitleColor:UIColorWithRGB(0x4d4b47) forState:UIControlStateNormal];
+	[button setTitleColor:UIColorWithRGB(0x807e7a) forState:UIControlStateHighlighted];
 	[button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
 	[button setTitle:title forState:UIControlStateNormal];
 	button.titleLabel.font = font;
@@ -28,8 +28,8 @@
 	UIBarButtonItem *item = [self _buttonItemWithTitle:title target:target action:action];
 	
 	UIButton *button = (UIButton *)item.customView;
-	[button setImage:UIUtil::Image(imageNamed) forState:UIControlStateNormal];
-	[button setImage:UIUtil::Image([imageNamed stringByAppendingString:@"_"]) forState:UIControlStateHighlighted];
+	[button setImage:UIImageBundled(imageNamed) forState:UIControlStateNormal];
+	[button setImage:UIImageBundled([imageNamed stringByAppendingString:@"_"]) forState:UIControlStateHighlighted];
 	[button sizeToFit];
 	
 	return item;
@@ -53,15 +53,15 @@
 {
 	self = [super initWithRootViewController:rootViewController];
 	self.navigationBar.translucent = NO;
-	[self.navigationBar setBackgroundImage:UIUtil::ImageWithColor(0xf8f8f8) forBarMetrics:UIBarMetricsDefault];
+	[self.navigationBar setBackgroundImage:UIImageBundledWithColor(0xf8f8f8) forBarMetrics:UIBarMetricsDefault];
 
 	if (!UIUtil::IsOS7())
 	{
-		self.navigationBar.shadowImage = UIUtil::Image(@"NaviBar_");
+		self.navigationBar.shadowImage = UIImageBundled(@"NaviBar_");
 		self.navigationBar.titleTextAttributes = @
 		{
 		UITextAttributeFont: [UIFont systemFontOfSize:18],
-		UITextAttributeTextColor: UIUtil::Color(49, 49, 49),
+		UITextAttributeTextColor: UIColorWithRGB(49, 49, 49),
 		UITextAttributeTextShadowColor: [UIColor clearColor],
 		UITextAttributeTextShadowOffset: [NSValue valueWithCGSize:CGSizeZero],
 		};

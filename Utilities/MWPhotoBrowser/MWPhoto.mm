@@ -101,7 +101,7 @@ caption = _caption;
 		else if (_photoUrl)
 		{
 			// Load async from web
-			NSString *path = NSUtil::CacheUrlPath(_photoUrl);
+			NSString *path = NSCacheUrlPath(_photoUrl);
 			UIImage *cachedImage = [UIImage imageWithContentsOfFile:path];
 			if (cachedImage)
 			{
@@ -188,7 +188,7 @@ caption = _caption;
 	@autoreleasepool
 	{
 		_Log(@"cacheImageDownloading %@", cacheImageUrl);
-		NSString *path = NSUtil::CacheUrlPath(cacheImageUrl);
+		NSString *path = NSCacheUrlPath(cacheImageUrl);
 		NSData *data = HttpUtil::DownloadData(cacheImageUrl, path, DownloadFromOnline);
 		UIImage *image = [UIImage imageWithData:data];
 		[self performSelectorOnMainThread:@selector(cacheImageDownloaded:) withObject:image waitUntilDone:YES];

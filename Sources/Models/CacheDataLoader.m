@@ -8,7 +8,7 @@
 //
 - (NSString *)cachePath
 {
-	return NSUtil::CacheUrlPath(self.service);
+	return NSCacheUrlPath(self.service);
 }
 
 //

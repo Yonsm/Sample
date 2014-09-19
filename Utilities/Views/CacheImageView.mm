@@ -15,7 +15,7 @@
 	cacheImageUrl = _SizingImageUrl(cacheImageUrl, frame.size.width, frame.size.height);
 #endif
 	
-	NSString *path = NSUtil::CacheUrlPath(cacheImageUrl);
+	NSString *path = NSCacheUrlPath(cacheImageUrl);
 	UIImage *image = [UIImage imageWithContentsOfFile:path];
 	[(id<CacheImageProtocol>)self setImage:image];
 	if (image == nil)
@@ -40,7 +40,7 @@
 	@autoreleasepool
 	{
 		_Log(@"cacheImageDownloading %@", cacheImageUrl);
-		NSString *path = NSUtil::CacheUrlPath(cacheImageUrl);
+		NSString *path = NSCacheUrlPath(cacheImageUrl);
 		NSData *data = HttpUtil::DownloadData(cacheImageUrl, path, DownloadFromOnline);
 		UIImage *image = data ? [UIImage imageWithData:data] : nil;
 		

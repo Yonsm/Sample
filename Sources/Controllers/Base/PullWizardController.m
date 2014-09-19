@@ -116,7 +116,7 @@
 	else
 	{
 		_contentHeight = 0;
-		UIUtil::RemoveSubviews(_contentView);
+		UIRemoveSubviews(_contentView);
 		_scrollView.contentSize = CGSizeZero;
 	}
 }

@@ -141,7 +141,7 @@
 //
 - (void)setNumberOfPages:(NSUInteger)numberOfPages
 {
-	if (_numberOfPages) UIUtil::RemoveSubviews(self);
+	if (_numberOfPages) UIRemoveSubviews(self);
 	_numberOfPages = numberOfPages;
 	
 	NSUInteger size = numberOfPages * sizeof(UIView *);

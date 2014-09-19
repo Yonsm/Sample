@@ -17,7 +17,7 @@ NSData *HttpUtil::DownloadData(NSString *url, NSString *to, DownloadMode mode)
 {
 	if (url == nil) return nil;
 	
-	if ((mode == DownloadFromLocal) || ((mode == DownloadCheckLocal) && NSUtil::IsFileExist(to)))
+	if ((mode == DownloadFromLocal) || ((mode == DownloadCheckLocal) && [NSFileManager.defaultManager fileExistsAtPath:to]))
 	{
 		return [NSData dataWithContentsOfFile:to];
 	}
@@ -108,7 +108,7 @@ id HttpUtil::HttpJSON(NSString *url, NSString *post, NSJSONReadingOptions option
 // Return error string, or nil on success
 NSString *HttpUtil::HttpFile(NSString *url, NSString *path)
 {
-	UIUtil::ShowNetworkIndicator(YES);
+	UIShowNetworkIndicator(YES);
 	
 	NSError *error = nil;
 	NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:url] options:NSUncachedRead error:&error];
@@ -117,7 +117,7 @@ NSString *HttpUtil::HttpFile(NSString *url, NSString *path)
 		[data writeToFile:path atomically:NO];
 	}
 	
-	UIUtil::ShowNetworkIndicator(NO);
+	UIShowNetworkIndicator(NO);
 	
 	return data ? nil : error.localizedDescription;
 }

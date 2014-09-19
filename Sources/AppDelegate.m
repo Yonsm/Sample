@@ -12,10 +12,10 @@
 // The application has launched and may have additional launch options to handle.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	UIUtil::ShowStatusBar(YES/*, UIStatusBarAnimationSlide*/);
+	UIShowStatusBar(YES, UIStatusBarAnimationFade);
 	
 	// Create window
-	_window = [[UIWindow alloc] initWithFrame:UIUtil::ScreenBounds()];
+	_window = [[UIWindow alloc] initWithFrame:UIScreenBounds()];
 	
 	// Create controller
 	// TODO: Remove navigation controller
@@ -27,7 +27,7 @@
 	_window.rootViewController = navigator;
 	[_window makeKeyAndVisible];
 	
-	//UIUtil::ShowSplashView(navigator.view);
+	//UIShowSplash(navigator.view, 3);
 	
 	StatStart();
 

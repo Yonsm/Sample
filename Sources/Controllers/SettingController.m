@@ -30,7 +30,7 @@
 //
 - (void)loadPage
 {
-	BOOL iPhone5 = UIUtil::IsPhone5();
+	BOOL iPhone5 = UIIsPhone5();
 	UIImage *image = [UIImage imageNamed:@"Icon"];
 	_logoButton = [UIButton buttonWithImage:image];
 	_logoButton.layer.cornerRadius = 8;
@@ -39,11 +39,12 @@
 	_logoButton.center = CGPointMake(1024/2, (iPhone5 ? 20 : 6) + image.size.height / 2);
 	[self addView:_logoButton];
 	
-	UILabel *label = UIUtil::LabelWithFrame(CGRectMake((1024-300)/2, _contentHeight + 4, 300, iPhone5 ? 40 : 20)
-											, [NSString stringWithFormat:NSLocalizedString(@"Version %@ %@© %@", @"版本 %@ %@© %@"), NSUtil::BundleVersion(), (iPhone5 ? @"\n" : @" "), NSUtil::BundleDisplayName()]
+	UILabel *label = UILabelWithFrame(CGRectMake((1024-300)/2, _contentHeight + 4, 300, iPhone5 ? 40 : 20)
+											, [NSString stringWithFormat:NSLocalizedString(@"Version %@ %@© %@", @"版本 %@ %@© %@"), NSBundleVersion(), (iPhone5 ? @"\n" : @" "), NSBundleDisplayName()]
 											, [UIFont systemFontOfSize:15]
 											, [UIColor darkGrayColor]
-											, NSTextAlignmentCenter);
+											);
+	label.textAlignment = NSTextAlignmentCenter;
 	[self addView:label];
 	if (iPhone5)
 	{
@@ -57,7 +58,7 @@
 	
 	{
 		[self cellButtonWithName:NSLocalizedString(@"Network Cache", @"网络缓存")
-						  detail:[NSString stringWithFormat:@"%.2f MB", float(NSUtil::CacheSize() / 1024.0 / 1024.0)]
+						  detail:[NSString stringWithFormat:@"%.2f MB", float(NSCacheSize() / 1024.0 / 1024.0)]
 						   title:NSLocalizedString(@"Clean", @"清除")
 						  action:@selector(clearButtonClicked:)
 						   width:56];

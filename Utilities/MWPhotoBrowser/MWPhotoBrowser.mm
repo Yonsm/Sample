@@ -228,8 +228,8 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	_toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 	
 	// Toolbar Items
-	_previousButton = [[UIBarButtonItem alloc] initWithImage:UIUtil::Image(@"BackwardIcon") style:UIBarButtonItemStylePlain target:self action:@selector(gotoPreviousPage)];
-	_nextButton = [[UIBarButtonItem alloc] initWithImage:UIUtil::Image(@"ForwardIcon") style:UIBarButtonItemStylePlain target:self action:@selector(gotoNextPage)];
+	_previousButton = [[UIBarButtonItem alloc] initWithImage:UIImageBundled(@"BackwardIcon") style:UIBarButtonItemStylePlain target:self action:@selector(gotoPreviousPage)];
+	_nextButton = [[UIBarButtonItem alloc] initWithImage:UIImageBundled(@"ForwardIcon") style:UIBarButtonItemStylePlain target:self action:@selector(gotoNextPage)];
 	_actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed:)];
 	
 	// Update

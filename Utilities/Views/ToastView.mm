@@ -110,7 +110,7 @@
 			else if (type == ToastViewCancel) name = @"ToastCacnel";
 			else if (type == ToastViewSuccess) name = @"ToastSuccess";
 			else name = @"ToastInfo";
-			icon = [[UIImageView alloc] initWithImage:UIUtil::Image(name)];
+			icon = [[UIImageView alloc] initWithImage:UIImageBundled(name)];
 			[self performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:2.5];
 		}
 		
@@ -122,7 +122,8 @@
 	}
 	
 	//
-	UILabel *label = UIUtil::LabelWithFrame(frame, title, font, UIUtil::Color(0xf9f9f9), NSTextAlignmentCenter);
+	UILabel *label = UILabelWithFrame(frame, title, font, UIColorWithRGB(0xf9f9f9));
+	label.textAlignment = NSTextAlignmentCenter;
 	label.numberOfLines = 0;
 
 	self = [super initWithFrame:CGRectMake(0, 0, width, CGRectGetMaxY(frame) + 8)];
@@ -170,55 +171,55 @@
 //
 + (ToastView *)toastWithTitle:(NSString *)title type:(ToastViewType)type
 {
-	return [UIUtil::FrontViewController().view toastWithTitle:title type:type];
+	return [UIFrontViewController().view toastWithTitle:title type:type];
 }
 
 //
 + (ToastView *)toastWithTitle:(NSString *)title
 {
-	return [UIUtil::FrontViewController().view toastWithTitle:title];
+	return [UIFrontViewController().view toastWithTitle:title];
 }
 
 //
 + (ToastView *)toastWithInfo:(NSString *)info
 {
-	return [UIUtil::FrontViewController().view toastWithInfo:info];
+	return [UIFrontViewController().view toastWithInfo:info];
 }
 
 //
 + (ToastView *)toastWithError:(NSString *)error
 {
-	return [UIUtil::FrontViewController().view toastWithError:error];
+	return [UIFrontViewController().view toastWithError:error];
 }
 
 //
 + (ToastView *)toastWithCancel:(NSString *)cancel
 {
-	return [UIUtil::FrontViewController().view toastWithCancel:cancel];
+	return [UIFrontViewController().view toastWithCancel:cancel];
 }
 
 //
 + (ToastView *)toastWithSuccess:(NSString *)success
 {
-	return [UIUtil::FrontViewController().view toastWithSuccess:success];
+	return [UIFrontViewController().view toastWithSuccess:success];
 }
 
 //
 + (ToastView *)toastWithLoading:(NSString *)loading
 {
-	return[UIUtil::FrontViewController().view toastWithLoading:loading];
+	return[UIFrontViewController().view toastWithLoading:loading];
 }
 
 //
 + (ToastView *)toastWithLoading
 {
-	return[UIUtil::FrontViewController().view toastWithLoading];
+	return[UIFrontViewController().view toastWithLoading];
 }
 
 //
 + (void)dismissToast
 {
-	[UIUtil::FrontViewController().view dismissToast];
+	[UIFrontViewController().view dismissToast];
 }
 
 @end

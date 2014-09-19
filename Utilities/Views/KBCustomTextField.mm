@@ -22,7 +22,7 @@
 	UIButton *button = [[KBCustomButton alloc] initWithFrame:frame];
 	button.titleLabel.font = [UIFont boldSystemFontOfSize:17];
 	[button setTitle:title forState:UIControlStateNormal];
-	[button setTitleColor:UIUtil::IsOS7() ? [UIColor whiteColor] : [UIColor darkGrayColor] forState:UIControlStateNormal];
+	[button setTitleColor:UIIsOS7() ? [UIColor whiteColor] : [UIColor darkGrayColor] forState:UIControlStateNormal];
 	[button setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
 	[button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
 	[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
@@ -172,7 +172,7 @@
 {
 	self = [super initWithFrame:frame];
 	self.keyboardType = UIKeyboardTypeNumberPad;
-	if (UIUtil::IsPad() == NO)
+	if (UIIsPad() == NO)
 	{
 		self.kbDelegate = self;
 		

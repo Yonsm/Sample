@@ -73,7 +73,7 @@
 	[super viewDidLoad];
 	if (!_noAutoHide)
 	{
-		UIUtil::AddTapGesture(self.view, _contentView, @selector(endEditing:));
+		//UIUtil::AddTapGesture(self.view, _contentView, @selector(endEditing:));
 	}
 }
 
@@ -158,7 +158,7 @@
 //
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-	UIView *view = UIUtil::FindFirstResponder(_scrollView);
+	UIView *view = UIFindFirstResponder(_scrollView);
 	if (view/* && !_keyboardShown*/)
 	{
 		//_Log(@"keyboardWillShow, _keyboardShown: %d, view: %@", _keyboardShown, NSStringFromClass(view.class));
@@ -194,7 +194,7 @@
 //
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-	UIView *view = UIUtil::FindFirstResponder(self.view);
+	UIView *view = UIFindFirstResponder(self.view);
 	if (view/* && _keyboardShown*/)
 	{
 		_Log(@"keyboardWillHide, _keyboardShown: %d, view: %@", _keyboardShown, NSStringFromClass(view.class));

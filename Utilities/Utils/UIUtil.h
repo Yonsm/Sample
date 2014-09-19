@@ -1,589 +1,661 @@
 
-#import <QuartzCore/QuartzCore.h>
+#import <UIKit/UIKit.h>
 
 //
-@interface UIDevice (EXDevice)
+@interface UIDevice (uniqueIdentifier)
 - (NSString *)uniqueIdentifier;
 @end
 
 //
-@interface UIViewController (EXViewController)
-- (void)dismissModalViewController;
-@end
+#pragma mark - Device methods
 
 //
-@interface EXTapGestureRecognizer : UITapGestureRecognizer <UIGestureRecognizerDelegate>
-@end
-
-//
-#define EXTableViewCellAccessoryButton (UIUtil::IsOS7() ? UITableViewCellAccessoryDetailButton : UITableViewCellAccessoryDetailDisclosureButton)
-
-//
-@class AppDelegate;
-class UIUtil
+NS_INLINE NSString *UIDeviceID()
 {
-#pragma mark Device methods
-public:
-	//
-	NS_INLINE UIDevice *Device()
+	if ([UIDevice.currentDevice respondsToSelector:@selector(identifierForVendor)])
 	{
-		return [UIDevice currentDevice];
+		return UIDevice.currentDevice.identifierForVendor.UUIDString;
 	}
-	
-	//
-	NS_INLINE NSString *DeviceID()
+	return [UIDevice.currentDevice uniqueIdentifier];
+}
+
+//
+NS_INLINE float UISystemVersion()
+{
+	return UIDevice.currentDevice.systemVersion.floatValue;
+}
+
+//
+NS_INLINE BOOL UIIsPad()
+{
+	return UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad;
+}
+
+//
+NS_INLINE BOOL UIIsOS7()
+{
+	return UISystemVersion() >= 7.0;
+}
+
+//
+NS_INLINE CGFloat UIScreenScale()
+{
+	return UIScreen.mainScreen.scale;
+}
+
+//
+NS_INLINE CGRect UIScreenBounds()
+{
+	return UIScreen.mainScreen.bounds;
+}
+
+//
+NS_INLINE BOOL UIIsRetina()
+{
+	return UIScreenScale() > 1;
+}
+
+//
+NS_INLINE BOOL UIIsPhone5()
+{
+	return UIScreenBounds().size.height > 480;
+}
+
+//
+NS_INLINE CGRect UIAppFrame()
+{
+	return UIScreen.mainScreen.applicationFrame;
+}
+
+//
+NS_INLINE CGSize UIScreenSize()
+{
+	CGRect frame = UIAppFrame();
+	return CGSizeMake(frame.size.width, frame.size.height + frame.origin.y);
+}
+
+
+#pragma mark - Application methods
+
+//
+NS_INLINE UIViewController *UIRootViewController()
+{
+	return UIApplication.sharedApplication.delegate.window.rootViewController;
+}
+
+//
+NS_INLINE UIViewController *UIFrontViewController()
+{
+	UIViewController *controller = UIRootViewController();
+	UIViewController *presented = controller.presentedViewController;
+	return presented ? presented : controller;
+}
+
+//
+NS_INLINE UIViewController *UIVisibleViewController()
+{
+	UIViewController *controller = UIFrontViewController();
+	while (YES)
 	{
-		if ([Device() respondsToSelector:@selector(identifierForVendor)])
+		if ([controller isKindOfClass:[UINavigationController class]])
 		{
-			return Device().identifierForVendor.UUIDString;
+			controller = ((UINavigationController *)controller).visibleViewController;
 		}
-		return [Device() uniqueIdentifier];
-	}
-	
-	//
-	NS_INLINE float SystemVersion()
-	{
-		return [[Device() systemVersion] floatValue];
-	}
-	
-	//
-	NS_INLINE BOOL IsPad()
-	{
-		return [Device() userInterfaceIdiom] == UIUserInterfaceIdiomPad;
-	}
-	
-	//
-	NS_INLINE BOOL IsRetina()
-	{
-		return ScreenScale() == 2;
-	}
-	
-	//
-	NS_INLINE BOOL IsPhone5()
-	{
-		return ScreenBounds().size.height > 480;
-	}
-	
-	//
-	NS_INLINE BOOL IsOS7()
-	{
-		return SystemVersion() >= 7.0;
-	}
-	
-	//
-	NS_INLINE UIScreen *Screen()
-	{
-		return [UIScreen mainScreen];
-	}
-	
-	//
-	NS_INLINE CGFloat ScreenScale()
-	{
-		return Screen().scale;
-	}
-	
-	//
-	NS_INLINE CGRect AppFrame()
-	{
-		return Screen().applicationFrame;
-	}
-	
-	//
-	NS_INLINE CGSize ScreenSize()
-	{
-		CGRect frame = AppFrame();
-		return CGSizeMake(frame.size.width, frame.size.height + frame.origin.y);
-	}
-	
-	//
-	NS_INLINE CGRect ScreenBounds()
-	{
-		return Screen().bounds;
-	}
-	
-	
-#pragma mark Application methods
-public:
-	//
-	NS_INLINE UIApplication *Application()
-	{
-		return UIApplication.sharedApplication;
-	}
-	
-	//
-	NS_INLINE AppDelegate *Delegate()
-	{
-		return (AppDelegate *)Application().delegate;
-	}
-	
-	//
-	NS_INLINE UIViewController *RootViewController()
-	{
-		return UIApplication.sharedApplication.delegate.window.rootViewController;
-	}
-	
-	//
-	NS_INLINE UIViewController *FrontViewController()
-	{
-		UIViewController *controller = RootViewController();
-		UIViewController *presented = controller.presentedViewController;
-		return presented ? presented : controller;
-	}
-	
-	//
-	NS_INLINE UIViewController *VisibleViewController()
-	{
-		UIViewController *controller = FrontViewController();
-		while (YES)
+		else if ([controller isKindOfClass:[UITabBarController class]])
 		{
-			if ([controller isKindOfClass:[UINavigationController class]])
-			{
-				controller = ((UINavigationController *)controller).visibleViewController;
-			}
-			else if ([controller isKindOfClass:[UITabBarController class]])
-			{
-				controller = ((UITabBarController *)controller).selectedViewController;
-			}
-			else
-			{
-				return controller;
-			}
-		}
-	}
-	
-	//
-	NS_INLINE BOOL CanOpenUrl(NSString *url)
-	{
-		return [Application() canOpenURL:[NSURL URLWithString:url]];
-	}
-	
-	//
-	NS_INLINE BOOL OpenUrl(NSString *url)
-	{
-		BOOL ret = [Application() openURL:[NSURL URLWithString:url]];
-		if (ret == NO)
-		{
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not open", @"无法打开")
-																message:url
-															   delegate:nil
-													  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"关闭")
-													  otherButtonTitles:nil];
-			[alertView show];
-		}
-		return ret;
-	}
-	
-	//
-	NS_INLINE BOOL OpenUrlWithEscape(NSString *url)
-	{
-		return OpenUrl([url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]);
-	}
-	
-	//
-	NS_INLINE BOOL MakeCall(NSString *number, BOOL direct = YES)
-	{
-		NSString *url = [NSString stringWithFormat:(direct ? @"tel://%@" : @"telprompt://%@"), [number stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-		NSURL *URL = [NSURL URLWithString:url];
-		
-		BOOL ret = [Application() openURL:URL];
-		if (ret == NO)
-		{
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not make call", @"无法拨打电话")
-																message:number
-															   delegate:nil
-													  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"关闭")
-													  otherButtonTitles:nil];
-			[alertView show];
-		}
-		return ret;
-	}
-	
-	//
-	NS_INLINE UIWindow *KeyWindow()
-	{
-		return Application().keyWindow;
-	}
-	
-	//
-	NS_INLINE BOOL IsWindowLandscape()
-	{
-		CGSize size = KeyWindow().frame.size;
-		return size.width > size.height;
-	}
-	
-	//
-	NS_INLINE BOOL IsKeyboardInDisplay()
-	{
-		Class keyboardClass = NSClassFromString(@"UIPeripheralHostView");
-		for (UIWindow *window in Application().windows)
-		{
-			for (UIView *subview in window.subviews )
-			{
-				if ([subview isKindOfClass:keyboardClass])
-				{
-					return YES;
-				}
-			}
-		}
-		return NO;
-	}
-	
-	//
-	NS_INLINE void ShowStatusBar(BOOL show = YES, UIStatusBarAnimation animated = UIStatusBarAnimationFade)
-	{
-		[Application() setStatusBarHidden:!show withAnimation:animated];
-	}
-	
-	//
-	static NSUInteger _networkIndicatorRef;
-	NS_INLINE void ShowNetworkIndicator(BOOL show = YES)
-	{
-		if (show)
-		{
-			if (_networkIndicatorRef == 0) Application().networkActivityIndicatorVisible = YES;
-			_networkIndicatorRef++;
+			controller = ((UITabBarController *)controller).selectedViewController;
 		}
 		else
 		{
-			if (_networkIndicatorRef != 0) _networkIndicatorRef--;
-			if (_networkIndicatorRef == 0) Application().networkActivityIndicatorVisible = NO;
+			return controller;
 		}
 	}
-	
-public:
-	// Log log with indent
-	static void LogIndentString(NSUInteger indent, NSString *str);
-	
-	// Log controller and sub-controllers
-	static void LogController(UIViewController *controller, NSUInteger indent = 0);
-	
-	// Log view and subviews
-	static void LogView(UIView *view, NSUInteger indent = 0);
-	
-	// Log layout constraints
-	static void LogConstraints(UIView *view);
-	
-public:
-	// Nomalize png file
-	static BOOL NormalizePngFile(NSString *dst, NSString *src);
-	
-	// Nomalize png folder
-	static void NormalizePngFolder(NSString *dst, NSString *src);
-	
-public:
-	//
-	static UIImageView *ShowSplashView(UIView *fadeInView = nil, CGFloat duration = 0.6);
-	
-#pragma mark Misc methods
-	
-	//
-	NS_INLINE UIImage *Image(NSString *file)
+}
+
+//
+NS_INLINE BOOL UICanOpenUrl(NSString *url)
+{
+	return [UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]];
+}
+
+//
+NS_INLINE BOOL UIOpenUrl(NSString *url)
+{
+	if (url == nil) return NO;
+	BOOL ret = [UIApplication.sharedApplication openURL:[NSURL URLWithString:url]];
+	if (ret == NO)
 	{
-#ifdef _UncacheImage
-		// 支持无 @1x 时使用
-		if (![file hasPrefix:@".png"]) file = [file stringByAppendingString:@"@2x.png"];
-		return [UIImage imageWithContentsOfFile:NSUtil::AssetPath(file)];
-#else
-		return ImageNamed(file);
-#endif
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not open", @"无法打开")
+															message:url
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"关闭")
+												  otherButtonTitles:nil];
+		[alertView show];
 	}
-	
-	//
-	NS_INLINE UIImage *ImageNamed(NSString *name)
+	return ret;
+}
+
+//
+NS_INLINE BOOL UIOpenUrlWithTelPrompt(NSString *url)
+{
+	if ([url hasPrefix:@"tel:"])
 	{
-#ifdef kAssetBundle
-		name = [kAssetBundle stringByAppendingPathComponent:name];
-#endif
-		return [UIImage imageNamed:name];
+		url = [url stringByReplacingOccurrencesOfString:@"tel:" withString:@"telprompt:"];
 	}
-	
-	// Param name must NOT have suffix @".png"
-	NS_INLINE UIImage *ImageNamed2X(NSString *name)
+	return UIOpenUrl(url);
+}
+
+//
+NS_INLINE BOOL UIOpenUrlWithEscape(NSString *url)
+{
+	return UIOpenUrl([url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]);
+}
+
+//
+NS_INLINE BOOL UIMakeCall(NSString *number, BOOL direct)
+{
+	NSString *url = [NSString stringWithFormat:(direct ? @"tel://%@" : @"telprompt://%@"), [number stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	NSURL *URL = [NSURL URLWithString:url];
+
+	BOOL ret = [UIApplication.sharedApplication openURL:URL];
+	if (ret == NO)
 	{
-		return ImageNamed([name stringByAppendingString:IsPad() ? @"@2x.png" : @".png"]);
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not make call", @"无法拨打电话")
+															message:number
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"关闭")
+												  otherButtonTitles:nil];
+		[alertView show];
 	}
-	
-	// UIColor from HTML color
-	NS_INLINE UIColor *Color(NSString *code)
+	return ret;
+}
+
+//
+NS_INLINE UIWindow *UIKeyWindow()
+{
+	return UIApplication.sharedApplication.keyWindow;
+}
+
+//
+NS_INLINE BOOL UIIsWindowLandscape()
+{
+	CGSize size = UIKeyWindow().frame.size;
+	return size.width > size.height;
+}
+
+//
+NS_INLINE void UIShowStatusBar(BOOL show, UIStatusBarAnimation animated)
+{
+	[UIApplication.sharedApplication setStatusBarHidden:!show withAnimation:animated];
+}
+
+//
+#import <objc/runtime.h>
+NS_INLINE void UIShowNetworkIndicator(BOOL show)
+{
+	UIApplication *app = UIApplication.sharedApplication;
+	const static void *kShowNetworkIndicatorKey = (const void *)@"UIShowNetworkIndicatorKey";
+	unsigned int networkIndicatorRef = [objc_getAssociatedObject(app, kShowNetworkIndicatorKey) unsignedIntValue];
+	if (show)
 	{
-		NSUInteger length = code.length;
-		if ((length == 6) || (length == 8))
+		if (networkIndicatorRef == 0) app.networkActivityIndicatorVisible = YES;
+		networkIndicatorRef++;
+	}
+	else
+	{
+		if (networkIndicatorRef != 0) networkIndicatorRef--;
+		if (networkIndicatorRef == 0) app.networkActivityIndicatorVisible = NO;
+	}
+	objc_setAssociatedObject(app, kShowNetworkIndicatorKey, [NSNumber numberWithUnsignedInt:networkIndicatorRef], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+
+#pragma mark - Color methods
+
+// UIColor from HTML color
+NS_INLINE UIColor *UIColorWithString(NSString *code)
+{
+	NSUInteger length = code.length;
+	if ((length == 6) || (length == 8))
+	{
+		unsigned char color[8];
+		sscanf(code.UTF8String, "%02X%02X%02X%02X", (unsigned int *)&color[0], (unsigned int *)&color[1], (unsigned int *)&color[2], (unsigned int *)&color[3]);
+		if (length == 6)
 		{
-			unsigned char color[8];
-			sscanf(code.UTF8String, "%02X%02X%02X%02X", (unsigned int *)&color[0], (unsigned int *)&color[1], (unsigned int *)&color[2], (unsigned int *)&color[3]);
-			if (length == 6)
-			{
-				color[3] = 0xFF;
-			}
-			return [UIColor colorWithRed:color[0]/255.0 green:color[1]/255.0 blue:color[2]/255.0 alpha:color[3]/255.0];
+			color[3] = 0xFF;
 		}
-		return [UIColor blackColor];
+		return [UIColor colorWithRed:color[0]/255.0 green:color[1]/255.0 blue:color[2]/255.0 alpha:color[3]/255.0];
 	}
-	
-	// UIColor from RGBO
-	NS_INLINE UIColor *Color(NSUInteger rgbt)
-	{
-		NSUInteger transparent = (rgbt & 0xFF000000) >> 24;
-		NSUInteger alpha = 0xFF - transparent;
-		return [UIColor colorWithRed:((rgbt & 0x00FF0000) >> 16) / 255.0
-							   green:((rgbt & 0x0000FF00) >> 8) / 255.0
-								blue:((rgbt & 0x000000FF)) / 255.0
-							   alpha:alpha / 255.0];
-	}
-	
-	// UIColor from RGBA
-	NS_INLINE UIColor *Color(unsigned char r, unsigned char g, unsigned char b, CGFloat a = 1)
-	{
-		return [UIColor colorWithRed:r / 255.0
-							   green:g / 255.0
-								blue:b / 255.0
-							   alpha:a];
-	}
-	
-public:
-	//
-	NS_INLINE UIImage *StretchableImage(UIImage *self)
-	{
-		return [self stretchableImageWithLeftCapWidth:self.size.width / 2 topCapHeight:self.size.height / 2];
-	}
-	
-	//
-	static UIImage *ImageWithColor(UIColor *color, CGSize size = CGSizeMake(1, 1));
-	
-	//
-	NS_INLINE UIImage *ImageWithColor(unsigned char r, unsigned char g, unsigned char b, CGFloat a = 1, CGSize size = CGSizeMake(1, 1))
-	{
-		return ImageWithColor(Color(r, g, b, a), size);
-	}
-	
-	//
-	NS_INLINE UIImage *ImageWithColor(NSUInteger rgbt, CGSize size = CGSizeMake(1, 1))
-	{
-		return ImageWithColor(Color(rgbt), size);
-	}
-	
-	// Scale to specified size if needed
-	static UIImage *ScaleImage(UIImage *self, CGSize size);
-	
-	//
-	static UIImage *CropImage(UIImage *self, CGRect rect);
-	
-	//
-	static UIImage *MaskImage(UIImage * self ,UIImage *mask);
-	
-	//
-	static CGAffineTransform ImageOrientation(UIImage *self, CGSize *newSize);
-	
-	//
-	static UIImage *StraightenAndScaleImage(UIImage *self, NSUInteger maxDimension);
-	
-	//
-#ifdef _BlurImage
-	static UIImage *BlurImage(UIImage *image, CGRect bounds, CGSize size, CGFloat blurRadius, UIColor *tintColor, CGFloat saturationDeltaFactor = 1.0, UIImage *maskImage = nil);
+	return [UIColor blackColor];
+}
+
+// UIColor from RGB
+NS_INLINE UIColor *UIColorWithRGB(NSUInteger rgb)
+{
+	//NSUInteger transparent = (rgb & 0xFF000000) >> 24;
+	//CGFloat alpha = (0xFF - transparent) / 255.0;
+	return [UIColor colorWithRed:((rgb & 0x00FF0000) >> 16) / 255.0
+						   green:((rgb & 0x0000FF00) >> 8) / 255.0
+							blue:((rgb & 0x000000FF)) / 255.0
+						   alpha:1];
+}
+
+#pragma mark - Image methods
+
+//
+NS_INLINE UIImage *UICacheImageBundled(NSString *name)
+{
+#ifdef kAssetBundle
+	name = [kAssetBundle stringByAppendingPathComponent:name];
 #endif
-	
-#pragma mark UIView methods
-	//
-	NS_INLINE UIView *ViewWithColor(CGRect frame, UIColor *backgroundColor = Color(0xcc, 0xcc, 0xcc))
+	return [UIImage imageNamed:name];
+}
+
+//
+NS_INLINE UIImage *UIUnCacheImageBundled(NSString *name)
+{
+	// 支持无 @1x 时使用
+	if (![name hasSuffix:@".png"]) name = [name stringByAppendingString:@"@2x.png"];
+	return [UIImage imageWithContentsOfFile:NSAssetSubPath(name)];
+}
+
+//
+NS_INLINE UIImage *UIImageBundled(NSString *name)
+{
+#ifdef _UIUnCacheImageBundled
+	return UIUnCacheImageBundled(file);
+#else
+	return UICacheImageBundled(name);
+#endif
+}
+
+// Param name must NOT have suffix @".png"
+NS_INLINE UIImage *UIImageBundled2X(NSString *name)
+{
+	return UIImageBundled([name stringByAppendingString:UIIsPad() ? @"@2x.png" : @".png"]);
+}
+
+//
+NS_INLINE UIImage *UIImageStretchable(UIImage *image)
+{
+	return [image stretchableImageWithLeftCapWidth:image.size.width / 2 topCapHeight:image.size.height / 2];
+}
+
+//
+NS_INLINE UIImage *UIImageWithColorAndSize(UIColor *color, CGSize size)
+{
+	UIGraphicsBeginImageContext(size);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+
+	CGContextSetFillColorWithColor(context, [color CGColor]);
+	CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
+
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	return image;
+}
+
+//
+NS_INLINE UIImage *UIImageWithColor(UIColor *color)
+{
+	return UIImageWithColorAndSize(color, CGSizeMake(1, 1));
+}
+
+//
+NS_INLINE UIImage *UIImageWithView(UIView *view)
+{
+	UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0.0);
+	[view.layer renderInContext:UIGraphicsGetCurrentContext()];
+	UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return screenshot;
+}
+
+//
+NS_INLINE BOOL UINormalizePngFile(NSString *dst, NSString *src)
+{
+	NSString *dir = dst.stringByDeletingLastPathComponent;
+	if ([[NSFileManager defaultManager] fileExistsAtPath:dir] == NO)
 	{
-		UIView *view = [[UIView alloc] initWithFrame:frame];
-		view.backgroundColor = backgroundColor;
+		[[NSFileManager defaultManager] createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
+	}
+
+	UIImage *image = [UIImage imageWithContentsOfFile:src];
+	if (image == nil) return NO;
+
+	NSData *data = UIImagePNGRepresentation(image);
+	if (data == nil) return NO;
+
+	return [data writeToFile:dst atomically:NO];
+}
+
+//
+NS_INLINE void UINormalizePngFolder(NSString *dst, NSString *src)
+{
+	NSArray *files = [[NSFileManager defaultManager] subpathsAtPath:src];
+	for (NSString *file in files)
+	{
+		if ([file.lowercaseString hasSuffix:@".png"])
+		{
+			UINormalizePngFile([dst stringByAppendingPathComponent:file], [src stringByAppendingPathComponent:file]);
+		}
+	}
+}
+
+#pragma mark - UIView methods
+
+//
+NS_INLINE UIView *UIViewWithColor(CGRect frame, UIColor *color)
+{
+	UIView *view = [[UIView alloc] initWithFrame:frame];
+	view.backgroundColor = color;
+	return view;
+}
+
+//
+NS_INLINE void UIRemoveSubviews(UIView *view)
+{
+	while (view.subviews.count)
+	{
+		UIView* child = view.subviews.lastObject;
+		[child removeFromSuperview];
+	}
+}
+
+//
+NS_INLINE UIView *UIFindFirstResponder(UIView *view)
+{
+	if ([view isFirstResponder])
+	{
 		return view;
 	}
-	
-	//
-	NS_INLINE void RemoveSubviews(UIView *self)
+
+	for (UIView *subview in view.subviews)
 	{
-		while (self.subviews.count)
+		UIView* ret = UIFindFirstResponder(subview);
+		if (ret)
 		{
-			UIView* child = self.subviews.lastObject;
-			[child removeFromSuperview];
+			return ret;
 		}
 	}
-	
-	//
-	NS_INLINE void HideKeyboard(UIView *self = KeyWindow())
+	return nil;
+}
+
+//
+NS_INLINE UIView *UIFindSubview(UIView *view, Class viewClass)
+{
+	for (UIView *subview in view.subviews)
 	{
-		[FindFirstResponder(self) resignFirstResponder];
-	}
-	
-	//
-	static UIView *FindFirstResponder(UIView *self);
-	
-	//
-	static UIView *FindSubview(UIView *self, NSString *cls);
-	
-	//
-	static UIActivityIndicatorView *ShowActivityIndicator(UIView *self, BOOL show);
-	
-	//
-	static void ShakeAnimating(UIView *self, void (^completion)(BOOL finished) = nil);
-	
-	//
-	static UIImage *Snapshot(UIView *self, BOOL optimized = NO);
-	
-	//
-	static UIView *SuperviewWithClass(UIView *self, Class viewClass);
-	
-#pragma mark UIAlertView methods
-	//
-	NS_INLINE UIAlertView *ShowAlert(NSString *title, NSString *message = nil, id delegate = nil, NSString *cancelButtonTitle = NSLocalizedString(@"Dismiss", @"关闭"), NSString *otherButtonTitle = nil, NSString *otherButtonTitle2 = nil, NSString *otherButtonTitle3 = nil, NSString *otherButtonTitle4 = nil)
-	{
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-															message:message
-														   delegate:delegate
-												  cancelButtonTitle:cancelButtonTitle
-												  otherButtonTitles:otherButtonTitle, otherButtonTitle2, otherButtonTitle3, otherButtonTitle4, nil];
-		[alertView show];
-		return alertView;
+		if ([subview isKindOfClass:viewClass])
+		{
+			return subview;
+		}
+		else
+		{
+			UIView *ret = UIFindSubview(subview, viewClass);
+			if (ret)
+			{
+				return ret;
+			}
+		}
 	}
 
-	//
-#define kActivityIndicatorTag 1924
-	NS_INLINE UIActivityIndicatorView *AlertActivityIndicator(UIAlertView *self)
+	return nil;
+}
+
+//
+NS_INLINE UIView *UIFindSuperview(UIView *view, Class viewClass)
+{
+	while ((view = view.superview))
 	{
-		UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[self viewWithTag:kActivityIndicatorTag];
-		if (activityIndicator == nil)
+		if ([view isKindOfClass:viewClass])
 		{
-			activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-			activityIndicator.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height - 40);
-			activityIndicator.tag = kActivityIndicatorTag;
-			activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
-			[self addSubview:activityIndicator];
-		}
-		return activityIndicator;
-	}
-	
-#pragma mark UITabBarController methods
-	//
-	NS_INLINE UIViewController *CurrentControllerInTab(UITabBarController *self)
-	{
-		if (UIUtil::IsPad())
-		{
-			return self.selectedIndex < 7 ? self.selectedViewController : self.moreNavigationController;
-		}
-		else
-		{
-			return self.selectedIndex < 4 ? self.selectedViewController : self.moreNavigationController;
+			return view;
 		}
 	}
-	
-#pragma mark UIViewController methods
-#ifndef _NavigationController
-#define _NavigationController UINavigationController
-#endif
-	//
-	NS_INLINE UINavigationController *PresentNavigationController(UIViewController *self, UIViewController *controller, BOOL animated = YES)
+	return nil;
+}
+
+//
+NS_INLINE UIActivityIndicatorView *UIShowActivityIndicator(UIView *view, BOOL show)
+{
+	const static NSInteger kActivityViewTag = 53214;
+	UIActivityIndicatorView *activityView = (UIActivityIndicatorView *)[view viewWithTag:kActivityViewTag];
+	if (show == NO)
 	{
-		UINavigationController *navigator = [[_NavigationController alloc] initWithRootViewController:controller];
-		navigator.modalTransitionStyle = controller.modalTransitionStyle;
-		navigator.modalPresentationStyle = controller.modalPresentationStyle;
-		
-#ifdef _NavigationBarTintColor
-		navigator.toolbar.tintColor = navigator.navigationBar.tintColor = _NavigationBarTintColor;
-#endif
-		
-		[self presentViewController:navigator animated:animated completion:nil];
-		return navigator;
+		[activityView removeFromSuperview];
+		return nil;
 	}
-	
-	//
-	NS_INLINE UINavigationController *PresentModalNavigationController(UIViewController *self, UIViewController *controller, BOOL animated = YES, NSString *dismissButtonTitle = NSLocalizedString(@"Back", @"返回"))
+	else if (activityView == nil)
 	{
-		controller.navigationItem.leftBarButtonItem = BarButtonTitleItem(dismissButtonTitle, self.navigationController, @selector(dismissModalViewController));
-		return PresentNavigationController(self, controller, animated);
+		activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+		activityView.center = CGPointMake(view.frame.size.width / 2, view.frame.size.height / 2);
+		activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+		[view addSubview:activityView];
+		[activityView startAnimating];
+		activityView.tag = kActivityViewTag;
 	}
-	
+	return activityView;
+}
+
+//
+NS_INLINE UIImageView *UIShowSplash(UIView *view, CGFloat duration)
+{
 	//
-	NS_INLINE void PresentViewController(UIViewController *self, UIViewController *controller, BOOL animated = YES)
+	CGRect frame = UIScreenBounds();
+	UIImageView *splashView = [[UIImageView alloc] initWithFrame:frame];
+	splashView.image = [UIImage imageNamed:UIIsPad() ? @"Default@iPad.png" : (UIIsPhone5() ? @"Default-568h.png" : @"Default.png")];
+	splashView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[UIKeyWindow() addSubview:splashView];
+
+	//
+	view.alpha = 0;
+
+	[UIView animateWithDuration:duration animations:^()
+	 {
+		 view.alpha = 1;
+		 splashView.alpha = 0;
+	 } completion:^(BOOL finished)
+	 {
+		 [splashView removeFromSuperview];
+	 }];
+
+	return splashView;
+}
+
+//
+NS_INLINE void UIShakeAnimating(UIView *view, void (^completion)(BOOL finished))
+{
+	[UIView animateWithDuration:0.1 animations:^()
+	 {
+		 view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -20, 0);
+	 } completion:^(BOOL finished)
+	 {
+		 [UIView animateWithDuration:0.1 animations:^()
+		  {
+			  view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 20, 0);
+		  } completion:^(BOOL finished)
+		  {
+			  [UIView animateWithDuration:0.1 animations:^()
+			   {
+				   view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -20, 0);
+
+			   } completion:^(BOOL finished)
+			   {
+				   [UIView animateWithDuration:0.1 animations:^()
+					{
+						view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+					} completion:completion];
+			   }];
+
+		  }];
+	 }];
+}
+
+#pragma mark - Label methods
+
+//
+NS_INLINE UILabel *UILabelWithFrame(CGRect frame, NSString *text, UIFont* font, UIColor *color)
+{
+	UILabel *label = [[UILabel alloc] initWithFrame:frame];
+	label.textColor = color;
+	label.backgroundColor = [UIColor clearColor];
+	label.font = font;
+	label.text = text;
+
+	return label;
+}
+
+//
+NS_INLINE UILabel *UILabelAtPoint(CGPoint point, CGFloat width, NSString *text, UIFont* font, UIColor *color)
+{
+	CGSize size = [text sizeWithFont:font
+				   constrainedToSize:CGSizeMake(width, 1000)];
+
+	CGRect frame = CGRectMake(point.x, point.y, width, ceil(size.height));
+
+	UILabel *label = UILabelWithFrame(frame, text, font, color);
+	label.numberOfLines = 0;
+	return label;
+}
+
+#pragma mark - Alert View methods
+
+//
+NS_INLINE UIAlertView *UIAlertViewWithTitleAndMessage(NSString *title, NSString *message)
+{
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Done", @"完成") otherButtonTitles:nil];
+	[alertView show];
+	return alertView;
+}
+
+//
+NS_INLINE UIAlertView *UIAlertViewWithTitle(NSString *title)
+{
+	return UIAlertViewWithTitleAndMessage(title, nil);
+}
+
+//
+NS_INLINE UIAlertView *UIAlertViewWithMessage(NSString *message)
+{
+	return UIAlertViewWithTitleAndMessage(@"", message);
+}
+
+#pragma mark - Misc methods
+
+//
+NS_INLINE UITableViewCellAccessoryType UITableViewCellAccessoryButton()
+{
+	return UIIsOS7() ? UITableViewCellAccessoryDetailButton : UITableViewCellAccessoryDetailDisclosureButton;
+}
+
+#pragma mark - Log Extension methods
+
+//
+NS_INLINE void UILogIndentString(NSUInteger indent, NSString *str)
+{
+	NSString *log = @"";
+	for (NSUInteger i = 0; i < indent; i++)
 	{
-		[self presentViewController:controller animated:animated completion:nil];
+		log = [log stringByAppendingString:@"\t"];
 	}
-	
-#pragma mark Bar button item methods
-	NS_INLINE id BarButtonItem(UIImage *image, NSString *title, id target = nil, SEL action = nil)
+	log = [log stringByAppendingString:str];
+	NSLog(@"%@", log);
+}
+
+// Log controller and sub-controllers
+NS_INLINE void UILogController(UIViewController *controller, NSUInteger indent)
+{
+	UILogIndentString(indent, [NSString stringWithFormat:@"<Controller Description=\"%@\">", [controller description]]);
+
+	if (controller.presentedViewController)
 	{
-		UIFont *font = title ? [UIFont boldSystemFontOfSize:13] : nil;
-		CGRect frame = {0, 0, [title sizeWithFont:font].width + image.size.width, image.size.height};
-		UIButton *button = [[UIButton alloc] initWithFrame:frame];
-		
-		if (title)
+		UILogController(controller, indent + 1);
+	}
+
+	if ([controller isKindOfClass:[UINavigationController class]])
+	{
+		for (UIViewController *child in ((UINavigationController *)controller).viewControllers)
 		{
-			button.titleLabel.font = font;
-			[button setTitle:title forState:UIControlStateNormal];
-			[button setBackgroundImage:StretchableImage(image) forState:UIControlStateNormal];
+			UILogController(child, indent + 1);
 		}
-		else
+	}
+	else if ([controller isKindOfClass:[UITabBarController class]])
+	{
+		UITabBarController *tabBarController = (UITabBarController *)controller;
+		for (UIViewController *child in tabBarController.viewControllers)
 		{
-			button.showsTouchWhenHighlighted = YES;
-			[button setImage:image forState:UIControlStateNormal];
+			UILogController(child, indent + 1);
 		}
-		
-		[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-		return [[UIBarButtonItem alloc] initWithCustomView:button];
+
+		if (tabBarController.moreNavigationController)
+		{
+			UILogController(tabBarController.moreNavigationController, indent + 1);
+		}
 	}
-	
-	//
-	NS_INLINE id BarButtonImageItem(UIImage *image, id target = nil, SEL action = nil)
+
+	UILogIndentString(indent, @"</Controller>");
+}
+
+// Log view and subviews
+NS_INLINE void UILogView(UIView *view, NSUInteger indent)
+{
+	CGRect frame = [view.superview convertRect:view.frame toView:nil];
+	NSString *rect = NSStringFromCGRect(frame);
+
+	UILogIndentString(indent, [NSString stringWithFormat:@"<View%@ Description=\"%@\">", rect, [view description]]);
+
+	for (UIView *child in view.subviews)
 	{
-		return BarButtonItem(image, nil, target, action);
+		UILogView(child, indent + 1);
 	}
-	
-	//
-	NS_INLINE id BarButtonTitleItem(NSString *title, id target = nil, SEL action = nil)
+
+	UILogIndentString(indent, @"</View>");
+}
+
+//
+NS_INLINE void UILogConstraints(UIView *view)
+{
+	NSArray *constraints = view.constraints;
+	_LogObj(view);
+	_LogObj(constraints);
+
+	const static NSString *_attributes[] =
 	{
-		return [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:target action:action];
-	}
-	
-#pragma mark UILabel methods
-	//
-	NS_INLINE UILabel *LabelAtPoint(CGPoint point, CGFloat width, NSString *text, UIFont* font = [UIFont systemFontOfSize:13], UIColor *color = UIColor.blackColor, NSTextAlignment alignment = NSTextAlignmentLeft)
+		@"None",
+		@"Left",
+		@"Right",
+		@"Top",
+		@"Bottom",
+		@"Leading",
+		@"Trailing",
+		@"Width",
+		@"Height",
+		@"CenterX",
+		@"CenterY",
+		@"Baseline",
+	};
+
+	for (NSLayoutConstraint *constraint in constraints)
 	{
-		CGSize size = [text sizeWithFont:font
-					   constrainedToSize:CGSizeMake(width, 1000)];
-		
-		CGRect frame = CGRectMake(point.x, point.y, width, ceil(size.height));
-		
-		UILabel *label = LabelWithFrame(frame, text, font, color, alignment);
-		label.numberOfLines = 0;
-		return label;
+		NSLog(@"{%.0f: %@/%@ %c %@/%@ %.1f%@}",
+			  constraint.priority,
+			  NSStringFromClass([constraint.firstItem class]),
+			  _attributes[constraint.firstAttribute],
+			  (constraint.relation > 0) ? '>' : ((constraint.relation < 0) ? '<' : '='),
+			  NSStringFromClass([constraint.secondItem class]),
+			  _attributes[constraint.secondAttribute],
+			  constraint.constant,
+			  ((constraint.multiplier == 1.0) ? @"" : [NSString stringWithFormat:@"x%.1f", constraint.multiplier])
+			  );
 	}
-	
-	//
-	NS_INLINE UILabel *LabelWithFrame(CGRect frame, NSString *text, UIFont* font = [UIFont systemFontOfSize:13], UIColor *color = UIColor.blackColor, NSTextAlignment alignment = NSTextAlignmentLeft)
-	{
-		UILabel *label = [[UILabel alloc] initWithFrame:frame];
-		label.textColor = color;
-		label.backgroundColor = [UIColor clearColor];
-		label.font = font;
-		label.text = text;
-		label.textAlignment = alignment;
-		
-		return label;
-	}
-	
-#pragma mark Gesture methods
-	//
-	NS_INLINE UITapGestureRecognizer *AddTapGesture(UIView *self, id target, SEL action)
-	{
-		UITapGestureRecognizer *gesture = [[EXTapGestureRecognizer alloc] initWithTarget:target action:action];
-		[self addGestureRecognizer:gesture];
-		return gesture;
-	}
-	
-	//
-	NS_INLINE UILongPressGestureRecognizer *AddHoldGesture(UIView *self, id target, SEL action)
-	{
-		UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:target action:action];
-		[self addGestureRecognizer:gesture];
-		return gesture;
-	}
-};
+}
 
 #if defined(DEBUG) || defined(TEST)
-#define _LogView(v)			UIUtil::LogView(v)
-#define _LogController(c)	UIUtil::LogController(c)
-#define _LogConstraints(v)	UIUtil::LogConstraints(v)
+#define _LogView(v)			UIULogView(v)
+#define _LogController(c)	UIULogController(c)
+#define _LogConstraints(v)	UIULogConstraints(v)
 #else
 #define _LogView(v)			((void) 0)
 #define _LogConstraints(v)	((void) 0)

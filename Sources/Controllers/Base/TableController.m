@@ -16,7 +16,7 @@
 - (id)init
 {
 	self = [super init];
-	_style = UIUtil::IsOS7() ? UITableViewStyleGrouped : UITableViewStylePlain;
+	_style = UIIsOS7() ? UITableViewStyleGrouped : UITableViewStylePlain;
 	return self;
 }
 
@@ -70,13 +70,13 @@
 			UIFont *font = [UIFont boldSystemFontOfSize:15];
 			UILabel *label = [UILabel labelWithFrame:CGRectMake(14, 22, 300, 16)
 												text:title
-											   color:UIUtil::Color(0x4d4d4d)
+											   color:UIColorWithRGB(0x4d4d4d)
 												font:font
 										   alignment:NSTextAlignmentLeft];
 			[view addSubview:label];
 			
 			UIView *line = [[[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, 0.5)] autorelease];
-			line.backgroundColor = UIUtil::Color(0xcccccc);
+			line.backgroundColor = UIColorWithRGB(0xcccccc);
 			[view addSubview:line];
 			
 			view.clipsToBounds = NO;

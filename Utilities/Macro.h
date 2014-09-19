@@ -50,9 +50,3 @@ _Pragma("clang diagnostic pop")
 #else
 #define NSLocalizedString(key, comment) [[NSBundle mainBundle] localizedStringForKey:(key) value:(key) table:nil]
 #endif
-
-#ifdef kAssetBundle
-#define BundleImage(name)	[UIImage imageNamed:[kAssetBundle stringByAppendingPathComponent:name]]
-#else
-#define BundleImage(name)	[UIImage imageNamed:name]
-#endif

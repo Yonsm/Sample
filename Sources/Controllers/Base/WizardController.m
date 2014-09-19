@@ -30,7 +30,7 @@
 	
 	_scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
 	_scrollView.delaysContentTouches = NO;
-	_scrollView.backgroundColor = UIUtil::Color(239, 239, 244);
+	_scrollView.backgroundColor = UIColorWithRGB(239, 239, 244);
 	_scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	_scrollView.alwaysBounceVertical = YES;
 	[self.view addSubview:_scrollView];
@@ -57,7 +57,7 @@
 //
 - (void)doneButtonClicked:(id)sender
 {
-	UIView *focusView = UIUtil::FindFirstResponder(self.view);
+	UIView *focusView = UIFindFirstResponder(self.view);
 	if (focusView)
 	{
 		[focusView resignFirstResponder];
@@ -252,7 +252,7 @@
 - (UILabel *)labelWithTitle:(NSString *)title
 {
 	UIFont *font = [UIFont boldSystemFontOfSize:14];
-	UILabel *label = UIUtil::LabelAtPoint(CGPointMake(kLeftGap, _contentHeight + 5), _contentWidth - 30, title, font, UIUtil::Color(0x4d4b47));
+	UILabel *label = UIUtil::LabelAtPoint(CGPointMake(kLeftGap, _contentHeight + 5), _contentWidth - 30, title, font, UIColorWithRGB(0x4d4b47));
 	[_contentView addSubview:label];
 	_contentHeight += label.frame.size.height + 10;
 	return label;
@@ -323,8 +323,8 @@
 }
 
 //
-#define kMajorButtonColor UIUtil::Color(0xff9900)
-#define kMajorButtonColor_ UIUtil::Color(0xff7700)
+#define kMajorButtonColor UIColorWithRGB(0xff9900)
+#define kMajorButtonColor_ UIColorWithRGB(0xff7700)
 #define kMajorButtonTextColor UIColor.whiteColor
 - (UIButton *)majorButtonWithTitle:(NSString *)title action:(SEL)action
 {
@@ -334,8 +334,8 @@
 }
 
 //
-#define kMinorButtonColor UIUtil::Color(211,254,189)
-#define kMinorButtonColor_ UIUtil::Color(0xc5eeaf)
+#define kMinorButtonColor UIColorWithRGB(211,254,189)
+#define kMinorButtonColor_ UIColorWithRGB(0xc5eeaf)
 #define kMinorButtonTextColor UIColor.blackColor
 - (UIButton *)minorButtonWithTitle:(NSString *)title action:(SEL)action
 {
@@ -361,8 +361,8 @@
 		}
 		else
 		{
-			color = UIUtil::Color(187,187,187);
-			color_ = UIUtil::Color(157,157,157);
+			color = UIColorWithRGB(187,187,187);
+			color_ = UIColorWithRGB(157,157,157);
 			textColor = kMajorButtonTextColor;
 		}
 		UIButton *button = [self buttonWithTitle:titles[i] action:action color:color color_:color_ frame:frame];
@@ -480,8 +480,8 @@
 - (void)selectButton:(UIButton *)button
 {
 	button.selected = YES;
-	UIImage *image = UIUtil::ImageNamed(@"RadioCheck");
-	UIImage *image_ = UIUtil::ImageNamed(@"RadioCheck_");
+	UIImage *image = UIImageBundledNamed(@"RadioCheck");
+	UIImage *image_ = UIImageBundledNamed(@"RadioCheck_");
 	[button setImage:image forState:(UIControlStateNormal)];
 	[button setImage:image_ forState:(UIControlStateHighlighted)];
 	

@@ -4,9 +4,9 @@
 //
 + (id)buttonWithTitle:(NSString *)title name:(NSString *)name width:(CGFloat)width font:(UIFont *)font
 {
-	UIImage *image = UIUtil::ImageNamed([name stringByAppendingString:@"Button.png"]);
-	UIImage *image_ = UIUtil::ImageNamed([name stringByAppendingString:@"Button_.png"]);
-	UIImage *imaged = UIUtil::ImageNamed([name stringByAppendingString:@"Button-.png"]);
+	UIImage *image = UIImageBundledNamed([name stringByAppendingString:@"Button.png"]);
+	UIImage *image_ = UIImageBundledNamed([name stringByAppendingString:@"Button_.png"]);
+	UIImage *imaged = UIImageBundledNamed([name stringByAppendingString:@"Button-.png"]);
 	
 	if (width == 0) width = image.size.width;
 	else if (width < 0) width = [title sizeWithFont:font].width + image.size.width;
@@ -101,8 +101,8 @@
 
 + (id)buttonWithImageNamed:(NSString *)imageName
 {
-	UIImage *image = UIUtil::ImageNamed(imageName);
-	UIImage *image_ = UIUtil::ImageNamed([imageName stringByAppendingString:@"_"]);
+	UIImage *image = UIImageBundledNamed(imageName);
+	UIImage *image_ = UIImageBundledNamed([imageName stringByAppendingString:@"_"]);
 	UIButton *button = [UIButton buttonWithImage:image];
 	if (image_)
 	{
@@ -117,10 +117,10 @@
 	UIFont *font = [UIFont systemFontOfSize:14];
 	
 #ifndef _CheckBoxImage
-#define _CheckBoxImage UIUtil::Image(@"CheckBox")
+#define _CheckBoxImage UIImageBundled(@"CheckBox")
 #endif
 #ifndef _CheckBoxImage_
-#define _CheckBoxImage_ UIUtil::Image(@"CheckBox_")
+#define _CheckBoxImage_ UIImageBundled(@"CheckBox_")
 #endif
 	UIImage *image = _CheckBoxImage;
 	UIImage *image_ = _CheckBoxImage_;
@@ -169,10 +169,10 @@
 #define kLinkButtonFont [UIFont systemFontOfSize:14]
 #endif
 #ifndef kLinkButtonColor
-#define kLinkButtonColor UIUtil::Color(0, 136, 221)
+#define kLinkButtonColor UIColorWithRGB(0, 136, 221)
 #endif
 #ifndef kLinkButtonColor_
-#define kLinkButtonColor_ UIUtil::Color(20, 166, 241)
+#define kLinkButtonColor_ UIColorWithRGB(20, 166, 241)
 #endif
 	
 	UIFont *font = kLinkButtonFont;
@@ -197,8 +197,8 @@
 	UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, width, 30)];
 	[button setTitle:title forState:UIControlStateNormal];
 	[button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-	[button setBackgroundImage:UIUtil::ImageWithColor(0x00aeef) forState:UIControlStateNormal];
-	[button setBackgroundImage:UIUtil::ImageWithColor(0x0092e9) forState:UIControlStateHighlighted];
+	[button setBackgroundImage:UIImageBundledWithColor(0x00aeef) forState:UIControlStateNormal];
+	[button setBackgroundImage:UIImageBundledWithColor(0x0092e9) forState:UIControlStateHighlighted];
 	button.titleLabel.font = font;
 	return button;
 }
@@ -214,8 +214,8 @@
 {
 	UIButton *button = [[UIButton alloc] initWithFrame:frame];
 	[button setTitle:title forState:UIControlStateNormal];
-	[button setBackgroundImage:UIUtil::ImageWithColor(color) forState:UIControlStateNormal];
-	[button setBackgroundImage:UIUtil::ImageWithColor(color_) forState:UIControlStateHighlighted];
+	[button setBackgroundImage:UIImageBundledWithColor(color) forState:UIControlStateNormal];
+	[button setBackgroundImage:UIImageBundledWithColor(color_) forState:UIControlStateHighlighted];
 	button.titleLabel.font = [UIFont systemFontOfSize:17];
 	button.layer.cornerRadius = 4;
 	button.clipsToBounds = YES;

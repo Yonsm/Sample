@@ -41,7 +41,7 @@
 //
 + (NSDictionary *)cityForPlacemarks:(NSArray *)placemarks
 {
-	NSData *data = [NSData dataWithContentsOfFile:NSUtil::AssetPath(@"dp_city.json")];
+	NSData *data = [NSData dataWithContentsOfFile:NSAssetSubPath(@"dp_city.json")];
 	NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	for (CLPlacemark *placemark in placemarks)
 	{
@@ -70,7 +70,7 @@
 {
 	if (code && ![code isEqualToString:@"86"])
 	{
-		NSData *data = [NSData dataWithContentsOfFile:NSUtil::AssetPath(@"dp_city.json")];
+		NSData *data = [NSData dataWithContentsOfFile:NSAssetSubPath(@"dp_city.json")];
 		NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 		for (NSString *group in dict.allKeys)
 		{

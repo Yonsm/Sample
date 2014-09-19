@@ -52,7 +52,6 @@
 	
 	_player = [[MPMoviePlayerController alloc] initWithContentURL:_URL];
 
-	if (UIUtil::SystemVersion() >= 3.2)
 	{
 		[self.view addSubview:_player.view];
 		_player.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);

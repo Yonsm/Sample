@@ -22,10 +22,3 @@
 @property(nonatomic,strong) NSString *body;
 + (id)composerWithBody:(NSString *)body link:(NSString *)link;
 @end
-
-
-//
-@interface UIViewController (ShareComposer)
-- (WeiboComposer *)composeWeibo:(NSString *)body pic:(NSString *)pic link:(NSString *)link;
-- (FacebookComposer *)composeFacebook:(NSString *)body link:(NSString *)link;
-@end

@@ -11,7 +11,7 @@
 	// Check
 	if ([MFMessageComposeViewController canSendText] == NO)
 	{
-		UIUtil::ShowAlert(NSLocalizedString(@"Could not send SMS on this device.", @"在此设备上无法发送短信。"));
+		UIAlertViewWithTitle(NSLocalizedString(@"Could not send SMS on this device.", @"在此设备上无法发送短信。"));
 		return nil;
 	}
 	
@@ -37,7 +37,7 @@
 	if (_autoSend)
 	{
 		_autoSend = NO;
-		UIView *entryView = UIUtil::FindSubview(UIUtil::KeyWindow(), @"CKMessageEntryView");
+		UIView *entryView = UIFindSubview(UIKeyWindow(), @"CKMessageEntryView");
 		for (UIView *child in entryView.subviews)
 		{
 			if ([child isKindOfClass:[UIButton class]] && (child.frame.size.width > child.frame.size.height))
@@ -55,7 +55,7 @@
 {
 	if (result == MessageComposeResultFailed)
 	{
-		UIUtil::ShowAlert(NSLocalizedString(@"Failed to send SMS.", @"发送短信失败。"));
+		UIAlertViewWithTitle(NSLocalizedString(@"Failed to send SMS.", @"发送短信失败。"));
 	}
 	else
 	{
@@ -63,7 +63,7 @@
 		
 		if ((result == MessageComposeResultSent) && _autoSend)
 		{
-			UIUtil::ShowAlert(NSLocalizedString(@"Send SMS successfully.", @"发送短信成功。"));
+			UIAlertViewWithTitle(NSLocalizedString(@"Send SMS successfully.", @"发送短信成功。"));
 		}
 	}
 }
@@ -79,7 +79,7 @@
 	// Check for email account
 	if ([MFMailComposeViewController canSendMail] == NO)
 	{
-		UIUtil::ShowAlert(NSLocalizedString(@"Please setup your email account first.", @"请先设置您的邮件账户。"));
+		UIAlertViewWithTitle(NSLocalizedString(@"Please setup your email account first.", @"请先设置您的邮件账户。"));
 		return nil;
 	}
 
@@ -97,7 +97,7 @@
 {
 	if (result == MFMailComposeResultFailed)
 	{
-		UIUtil::ShowAlert(NSLocalizedString(@"Failed to send email.", @"发送邮件失败。"));
+		UIAlertViewWithTitle(NSLocalizedString(@"Failed to send email.", @"发送邮件失败。"));
 	}
 	else
 	{

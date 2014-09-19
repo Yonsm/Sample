@@ -19,7 +19,7 @@
 //- (void)loadView
 //{
 //	[super loadView];
-//	self.view.backgroundColor = UIUtil::Color(239, 239, 244);
+//	self.view.backgroundColor = UIColorWithRGB(239, 239, 244);
 //}
 
 // Do additional setup after loading the view.

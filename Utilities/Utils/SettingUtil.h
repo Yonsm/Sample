@@ -18,7 +18,7 @@ public:
 		@autoreleasepool {
 		//if (_settings == nil)
 			{
-				NSString *path = NSUtil::DocumentPath(kSettingsFile);
+				NSString *path = NSDocumentSubPath(kSettingsFile);
 				_settings = [[NSMutableDictionary alloc] initWithContentsOfFile:path];
 				if (_settings == nil) _settings = [[NSMutableDictionary alloc] init];
 			}
@@ -35,7 +35,7 @@ public:
 	//
 	NS_INLINE void Save()
 	{
-		[_settings writeToFile:NSUtil::DocumentPath(kSettingsFile) atomically:YES];
+		[_settings writeToFile:NSDocumentSubPath(kSettingsFile) atomically:YES];
 	}
 	
 	//
@@ -47,7 +47,7 @@ public:
 	//
 	NS_INLINE NSString *DecryptGet(NSString *key)
 	{
-		return NSUtil::DecryptString(Get(key));
+		return NSStringDecrypt(Get(key));
 	}
 	
 	//
@@ -59,7 +59,7 @@ public:
 	//
 	NS_INLINE void EncryptSet(NSString *key, id value = nil)
 	{
-		[_settings setValue:NSUtil::EncryptString(value) forKey:key];
+		[_settings setValue:NSStringEncrypt(value) forKey:key];
 	}
 	
 	//

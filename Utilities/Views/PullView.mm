@@ -32,7 +32,7 @@
 	//
 	_arrowImage = [CALayer layer];
 	_arrowImage.contentsGravity = kCAGravityResizeAspect;
-	_arrowImage.contents = (id)UIUtil::ImageNamed(@"PullArrow.png").CGImage;
+	_arrowImage.contents = (id)UIImageBundled(@"PullArrow").CGImage;
 	_arrowImage.contentsScale = [[UIScreen mainScreen] scale];
 	[[self layer] addSublayer:_arrowImage];
 	
@@ -234,7 +234,7 @@
 		
 		// Create brand view
 #ifdef kPullViewBrand
-	TODO:UIImageView *brandView = [[[UIImageView alloc] initWithImage:UIUtil::ImageNamed(kPullViewBrand)] autorelease];
+	TODO:UIImageView *brandView = [[[UIImageView alloc] initWithImage:UIImageBundledNamed(kPullViewBrand)] autorelease];
 		brandView.center = CGPointMake(pullView.frame.size.width / 2, pullView.frame.size.height - 65 - (brandView.frame.size.height / 2));
 		[pullView addSubview:brandView];
 #endif

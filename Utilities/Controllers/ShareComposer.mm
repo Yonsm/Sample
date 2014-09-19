@@ -8,8 +8,8 @@
 //
 + (id)composerWithBody:(NSString *)body pic:(NSString *)pic link:(NSString *)link
 {
-	NSString *uid = NSUtil::BundleInfo(@"WeiboAppUid");
-	NSString *key = NSUtil::BundleInfo(@"WeiboAppKey");
+	NSString *uid = NSBundleInfo(@"WeiboAppUid");
+	NSString *key = NSBundleInfo(@"WeiboAppKey");
 	NSString *url = [NSString stringWithFormat:@"http://service.weibo.com/share/share.php?title=%@&url=%@&appkey=%@&pic=%@&ralateUid=%@",
 					 
 					 [body stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], 
@@ -24,7 +24,7 @@
 //
 + (id)composerWithBody:(NSString *)body
 {
-	NSString *uid = NSUtil::BundleInfo(@"WeiboAppUid");
+	NSString *uid = NSBundleInfo(@"WeiboAppUid");
 	NSString *url = [NSString stringWithFormat:@"http://m.weibo.cn/u/%@?", (uid ? uid : @"")];
 	WeiboComposer *composer = [[WeiboComposer alloc] initWithUrl:url];
 	composer.body = body;
@@ -154,28 +154,6 @@
 				[webView stringByEvaluatingJavaScriptFromString:js];
 			}
 		}
-}
-
-@end
-
-
-//
-@implementation UIViewController (ShareComposer)
-
-//
-- (WeiboComposer *)composeWeibo:(NSString *)body pic:(NSString *)pic link:(NSString *)link
-{
-	WeiboComposer *composer = [WeiboComposer composerWithBody:body pic:pic link:link];
-	UIUtil::PresentModalNavigationController(self, composer);
-	return composer;
-}
-
-//
-- (FacebookComposer *)composeFacebook:(NSString *)body link:(NSString *)link
-{
-	FacebookComposer *composer = [FacebookComposer composerWithBody:body link:link];
-	UIUtil::PresentModalNavigationController(self, composer);
-	return composer;
 }
 
 @end

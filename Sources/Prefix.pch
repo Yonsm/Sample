@@ -26,9 +26,9 @@
 
 #ifdef __OBJC__
 
-#ifdef __cplusplus
 #import "NSUtil.h"
 #import "UIUtil.h"
+#ifdef __cplusplus
 #import "HttpUtil.h"
 #import "SettingUtil.h"
 #import "StatCenter.h"

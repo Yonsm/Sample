@@ -206,14 +206,14 @@
 	view.backgroundColor = _scrollView.backgroundColor;
 	view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
-	UIImageView *icon = [[UIImageView alloc] initWithImage:UIUtil::Image(@"EmptyIcon")];
+	UIImageView *icon = [[UIImageView alloc] initWithImage:UIImageBundled(@"EmptyIcon")];
 	icon.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	icon.center = CGPointMake(frame.size.width / 2, frame.size.height / 2 - 30);
 	[view addSubview:icon];
 	
 	frame.origin.y = CGRectGetMaxY(icon.frame) + 12;
 	frame.size.height = 16;
-	UILabel *label = UIUtil::LabelWithFrame(frame, @"没有内容", [UIFont systemFontOfSize:14], UIUtil::Color(0x807e7a), NSTextAlignmentCenter);
+	UILabel *label = UILabelWithFrame(frame, @"没有内容", [UIFont systemFontOfSize:14], UIColorWithRGB(0x807e7a), NSTextAlignmentCenter);
 	label.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	[view addSubview:label];
 	

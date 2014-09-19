@@ -17,7 +17,7 @@
 - (UIView *)lineWithFrame:(CGRect)frame
 {
 	UIView *line = [[UIView alloc] initWithFrame:frame];
-	line.backgroundColor = UIUtil::Color(0xdfdbdc);
+	line.backgroundColor = UIColorWithRGB(0xdfdbdc);
 	[self addSubview:line];
 	return line;
 }
@@ -60,7 +60,7 @@
 	CGRect frame = {kLeftGap, (self.frame.size.height - 20) / 2, [name sizeWithFont:font].width, 20};
 	if (_nameLabel == nil)
 	{
-		_nameLabel = UIUtil::LabelWithFrame(frame, name, font);
+		_nameLabel = UILabelWithFrame(frame, name, font);
 		[self addSubview:_nameLabel];
 	}
 	else
@@ -79,7 +79,7 @@
 	CGRect frame = {x, 2, right - x, self.frame.size.height - 4};
 	if (_detailLabel == nil)
 	{
-		_detailLabel = UIUtil::LabelWithFrame(frame, detail, font, UIUtil::Color(90, 90, 90), NSTextAlignmentRight);
+		_detailLabel = UILabelWithFrame(frame, detail, font, UIColorWithRGB(90, 90, 90), NSTextAlignmentRight);
 		_detailLabel.adjustsFontSizeToFitWidth = YES;
 		[self addSubview:_detailLabel];
 	}
@@ -105,7 +105,7 @@
 {
 	if (_target && _action)
 	{
-		self.backgroundColor = UIUtil::Color(0xd9d9d9);
+		self.backgroundColor = UIColorWithRGB(0xd9d9d9);
 	}
 	[super touchesBegan:touches withEvent:event];
 }
@@ -115,8 +115,8 @@
 {
 	if (_target && _action)
 	{
-		[self performSelector:@selector(setBackgroundColor:) withObject:UIUtil::Color(0xffffff) afterDelay:0.15];
-		//self.backgroundColor = UIUtil::Color(0xffffff);
+		[self performSelector:@selector(setBackgroundColor:) withObject:UIColorWithRGB(0xffffff) afterDelay:0.15];
+		//self.backgroundColor = UIColorWithRGB(0xffffff);
 		_SuppressPerformSelectorLeakWarning([_target performSelector:_action withObject:self]);
 	}
 	[super touchesEnded:touches withEvent:event];
@@ -127,7 +127,7 @@
 {
 	if (_target && _action)
 	{
-		self.backgroundColor = UIUtil::Color(0xffffff);
+		self.backgroundColor = UIColorWithRGB(0xffffff);
 	}
 	[super touchesCancelled:touches withEvent:event];
 }
@@ -168,7 +168,7 @@
 	{
 		if ((_accessoryType != WizardCellAccessoryPopup) && (_accessoryType != WizardCellAccessoryDropdown) && (_accessoryType != WizardCellAccessoryDisclosure))
 		{
-			self.accessoryView = [[UIImageView alloc] initWithImage:UIUtil::Image(@"CellAccessoryDisclosure")];
+			self.accessoryView = [[UIImageView alloc] initWithImage:UIImageBundled(@"CellAccessoryDisclosure")];
 		}
 		
 		if (accessoryType == WizardCellAccessoryPopup)
@@ -182,11 +182,11 @@
 	}
 	else if (accessoryType == WizardCellAccessoryEnter)
 	{
-		self.accessoryView = [[UIImageView alloc] initWithImage:UIUtil::Image(@"CellAccessoryEnter")];
+		self.accessoryView = [[UIImageView alloc] initWithImage:UIImageBundled(@"CellAccessoryEnter")];
 	}
 	else if (accessoryType == WizardCellAccessoryCheckmark)
 	{
-		self.accessoryView = [[UIImageView alloc] initWithImage:UIUtil::Image(@"CellAccessoryCheckmark")];
+		self.accessoryView = [[UIImageView alloc] initWithImage:UIImageBundled(@"CellAccessoryCheckmark")];
 	}
 	else
 	{

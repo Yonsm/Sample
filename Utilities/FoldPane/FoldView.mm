@@ -231,7 +231,7 @@
 
 - (void)drawScreenshotOnFolds
 {
-	UIImage *image = UIUtil::Snapshot(self.contentView, self.useOptimizedScreenshot);
+	UIImage *image = UISnapshot(self.contentView, self.useOptimizedScreenshot);
 	[self setImage:image];
 }
 

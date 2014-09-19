@@ -67,7 +67,7 @@
 //
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-	UIView *view = UIUtil::FindFirstResponder(self);
+	UIView *view = UIFindFirstResponder(self);
 	if (view)
 	{
 		CGRect rect;
@@ -93,7 +93,7 @@
 //
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-	UIView *view = UIUtil::FindFirstResponder(self);
+	UIView *view = UIFindFirstResponder(self);
 	if (view)
 	{
 		CGRect rect;
@@ -120,7 +120,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	[super touchesBegan:touches withEvent:event];
-	UIUtil::HideKeyboard(self);
+	[self endEditing:YES];
 }
 
 @end

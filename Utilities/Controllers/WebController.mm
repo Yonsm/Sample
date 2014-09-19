@@ -31,7 +31,7 @@
 // Destructor
 - (void)dealloc
 {
-	if (_loading) UIUtil::ShowNetworkIndicator(NO);
+	if (_loading) UIShowNetworkIndicator(NO);
 }
 
 //
@@ -136,7 +136,7 @@
 //
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-	if (_loading++ == 0) UIUtil::ShowNetworkIndicator(YES);
+	if (_loading++ == 0) UIShowNetworkIndicator(YES);
 	self.title = NSLocalizedString(@"Loading...", @"加载中⋯");
 	
 	_rightButton = self.navigationItem.rightBarButtonItem;
@@ -151,7 +151,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
 	if (_loading != 0) _loading--;
-	if (_loading == 0) UIUtil::ShowNetworkIndicator(NO);
+	if (_loading == 0) UIShowNetworkIndicator(NO);
 	self.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 	[self.navigationItem setRightBarButtonItem:_rightButton animated:YES];
 	
@@ -176,7 +176,7 @@
 		
 		[((UIWebView *)self.view) loadHTMLString:string baseURL:nil];
 #else
-		UIUtil::ShowAlert(NSLocalizedString(@"Error", @"错误"), error.localizedDescription);
+		UIAlertViewWithTitleAndMessage(NSLocalizedString(@"Error", @"错误"), error.localizedDescription);
 #endif
 	}
 }
@@ -225,7 +225,7 @@
 		}
 		else
 		{
-			button = [[UIBarButtonItem alloc] initWithImage:UIUtil::ImageNamed((__bridge NSString *)c_buttons[i].title) style:UIBarButtonItemStylePlain target:target action:c_buttons[i].action];
+			button = [[UIBarButtonItem alloc] initWithImage:UIImageBundled((__bridge NSString *)c_buttons[i].title) style:UIBarButtonItemStylePlain target:target action:c_buttons[i].action];
 		}
 		[buttons addObject:button];
 
