@@ -38,6 +38,12 @@ NS_INLINE BOOL UIIsOS7()
 }
 
 //
+NS_INLINE BOOL UIIsOS8()
+{
+	return UISystemVersion() >= 8.0;
+}
+
+//
 NS_INLINE CGFloat UIScreenScale()
 {
 	return UIScreen.mainScreen.scale;
@@ -50,6 +56,18 @@ NS_INLINE CGRect UIScreenBounds()
 }
 
 //
+NS_INLINE CGFloat UIScreenWidth()
+{
+	return UIScreenBounds().size.width;
+}
+
+//
+NS_INLINE CGFloat UIScreenHeight()
+{
+	return UIScreenBounds().size.height;
+}
+
+//
 NS_INLINE BOOL UIIsRetina()
 {
 	return UIScreenScale() > 1;
@@ -58,7 +76,13 @@ NS_INLINE BOOL UIIsRetina()
 //
 NS_INLINE BOOL UIIsPhone5()
 {
-	return UIScreenBounds().size.height > 480;
+	return UIScreenHeight() > 480;
+}
+
+//
+NS_INLINE BOOL UIIsPhone6()
+{
+	return UIScreenWidth() > 320;
 }
 
 //
@@ -66,14 +90,6 @@ NS_INLINE CGRect UIAppFrame()
 {
 	return UIScreen.mainScreen.applicationFrame;
 }
-
-//
-NS_INLINE CGSize UIScreenSize()
-{
-	CGRect frame = UIAppFrame();
-	return CGSizeMake(frame.size.width, frame.size.height + frame.origin.y);
-}
-
 
 #pragma mark - Application methods
 
