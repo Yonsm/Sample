@@ -41,7 +41,7 @@
 	{
 		_Log(@"cacheImageDownloading %@", cacheImageUrl);
 		NSString *path = NSCacheUrlPath(cacheImageUrl);
-		NSData *data = HttpUtil::DownloadData(cacheImageUrl, path, DownloadFromOnline);
+		NSData *data = DownloadDataWithMode(cacheImageUrl, path, DownloadFromOnline);
 		UIImage *image = data ? [UIImage imageWithData:data] : nil;
 		
 		if ([self respondsToSelector:@selector(cacheImageDownloaded2:)])

@@ -112,9 +112,13 @@
 			}
 		}
 #endif
-		else if (UIKBKeyView *subview2 = [self findKeyView:name inView:subview])
+		else
 		{
-			return subview2;
+			UIKBKeyView *subview2 = [self findKeyView:name inView:subview];
+			if (subview2)
+			{
+				return subview2;
+			}
 		}
 	}
 	return nil;

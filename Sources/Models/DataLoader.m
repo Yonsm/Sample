@@ -331,7 +331,7 @@ static NSString *_access_token = nil;
 	id params = [_params isKindOfClass:[NSDictionary class]] ? NSUtil::URLQuery((NSDictionary *)_params) : _params;
 	_Log(@"%@%@", url, params ? [@"&" stringByAppendingString:params] : @"");
 	NSData *post = [params dataUsingEncoding:NSUTF8StringEncoding];
-	NSData *data = HttpUtil::HttpData(url, post, NSURLRequestReloadIgnoringCacheData, &response, &error);
+	NSData *data = HttpData(url, post, NSURLRequestReloadIgnoringCacheData, &response, &error);
 	if (data == nil)
 	{
 		_Log(@"Response: %@\n\nError: %@\n\n", response, error);

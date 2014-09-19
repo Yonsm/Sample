@@ -28,10 +28,10 @@
 
 #import "NSUtil.h"
 #import "UIUtil.h"
-#ifdef __cplusplus
 #import "HttpUtil.h"
+#import "StatUtil.h"
+#ifdef __cplusplus
 #import "SettingUtil.h"
-#import "StatCenter.h"
 #import "NetworkUtil.h"
 //#import "SystemUtil.h"
 #endif

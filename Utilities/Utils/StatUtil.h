@@ -4,7 +4,7 @@
 #endif
 
 //
-NS_INLINE void StatStart(NSString *channeId = nil)
+NS_INLINE void StatStartWithChannel(NSString *channeId)
 {
 #ifdef kAppStatKey
 	[MobClick startWithAppkey:kAppStatKey reportPolicy:BATCH channelId:channeId];
@@ -12,7 +12,23 @@ NS_INLINE void StatStart(NSString *channeId = nil)
 }
 
 //
-NS_INLINE void StatEvent(NSString *event, NSDictionary *attrs = nil)
+NS_INLINE void StatStart()
+{
+#ifdef kAppStatKey
+	[MobClick startWithAppkey:kAppStatKey];
+#endif
+}
+
+//
+NS_INLINE void StatEvent(NSString *event)
+{
+#ifdef kAppStatKey
+	[MobClick event:event];
+#endif
+}
+
+//
+NS_INLINE void StatEventWithAttributes(NSString *event, NSDictionary *attrs)
 {
 #ifdef kAppStatKey
 	if (attrs) [MobClick event:event attributes:attrs];
@@ -21,20 +37,18 @@ NS_INLINE void StatEvent(NSString *event, NSDictionary *attrs = nil)
 }
 
 //
-NS_INLINE void StatEvent(NSString *event, NSString *attr1, NSString *attr2)
+NS_INLINE void StatEvent1(NSString *event, NSString *attr)
 {
 #ifdef kAppStatKey
-	NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:attr1, @"u", attr2, @"a", nil];
-	StatEvent(event, attrs);
+	StatEventWithAttributes(event, @{@"u": attr});
 #endif
 }
 
 //
-NS_INLINE void StatEvent(NSString *event, NSString *attr)
+NS_INLINE void StatEvent2(NSString *event, NSString *attr1, NSString *attr2)
 {
 #ifdef kAppStatKey
-	NSDictionary *attrs = [NSDictionary dictionaryWithObject:attr forKey:@"u"];
-	StatEvent(event, attrs);
+	StatEventWithAttributes(event, @{@"u": attr1, @"a", attr2});
 #endif
 }
 

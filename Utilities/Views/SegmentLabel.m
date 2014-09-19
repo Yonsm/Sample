@@ -219,7 +219,8 @@ CGContextRef _context = nil;
 	
 	for (SegmentItem *label in _items)
 	{
-		if (UIColor *color = (_highlighted && label.highlightedColor) ? label.highlightedColor : label.color)
+		UIColor *color = (_highlighted && label.highlightedColor) ? label.highlightedColor : label.color;
+		if (color)
 		{
 			CGContextSetFillColorWithColor(context, color.CGColor);
 		}

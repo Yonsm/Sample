@@ -203,7 +203,7 @@
 //	_webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
 
 	// Create toolbar
-	const static struct {void* title; SEL action;} c_buttons[] =
+	const struct {void* title; SEL action;} c_buttons[] =
 	{
 		{(void *)UIBarButtonSystemItemRefresh, @selector(reload)},
 		{(void *)@"BackwardIcon.png", @selector(goBack)},

@@ -189,7 +189,7 @@ caption = _caption;
 	{
 		_Log(@"cacheImageDownloading %@", cacheImageUrl);
 		NSString *path = NSCacheUrlPath(cacheImageUrl);
-		NSData *data = HttpUtil::DownloadData(cacheImageUrl, path, DownloadFromOnline);
+		NSData *data = DownloadDataWithMode(cacheImageUrl, path, DownloadFromOnline);
 		UIImage *image = [UIImage imageWithData:data];
 		[self performSelectorOnMainThread:@selector(cacheImageDownloaded:) withObject:image waitUntilDone:YES];
 	}

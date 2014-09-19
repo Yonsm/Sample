@@ -1,5 +1,6 @@
 
 #import "NSUtil.h"
+#if _NSUtilEx
 #import <CommonCrypto/CommonHMAC.h>
 #import <CommonCrypto/CommonDigest.h>
 
@@ -10,14 +11,14 @@ NSString *NSFormatReadableAmount(NSString *amount)
 	{
 		return @"未知";
 	}
-	
+
 	if ([amount hasSuffix:@".00"])
 	{
 		amount = [amount substringToIndex:amount.length - 3];
 	}
-	
+
 	NSMutableString *ret = [NSMutableString string];
-	
+
 	//
 	NSRange range = [amount rangeOfString:@"."];
 	NSString *amount3 = nil;
@@ -36,7 +37,7 @@ NSString *NSFormatReadableAmount(NSString *amount)
 	NSString *amount2 = amount;
 	while ([amount2 hasPrefix:@"0"]) amount2 = [amount2 substringFromIndex:1];
 	if (amount2.length == 0) amount2 = (amount3 || !amount1) ? @"0" : nil;
-	
+
 	//
 	if (amount2 || amount3)
 	{
@@ -44,24 +45,24 @@ NSString *NSFormatReadableAmount(NSString *amount)
 		{
 			[ret appendString:@" 万 "];
 		}
-		
+
 		if (amount2)
 		{
 			[ret appendString:amount2];
 		}
-		
+
 		if (amount3)
 		{
 			[ret appendString:amount3];
 		}
-		
+
 		[ret appendString:@" 元"];
 	}
 	else
 	{
 		[ret appendString:@" 万元"];
 	}
-	
+
 	return ret;
 }
 
@@ -76,7 +77,7 @@ BOOL NSIsEmailAddress(NSString *emailAddress)
 	@"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"
 	@"9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
 	@"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-	
+
 	NSPredicate *regExPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
 	return [regExPredicate evaluateWithObject:[emailAddress lowercaseString]];
 }
@@ -93,10 +94,10 @@ BOOL NSIsMobileNumber(NSString *phoneNumber)
 BOOL NSIsPhoneNumberEqual(NSString *phoneNumber1, NSString *phoneNumber2, NSUInteger minEqual)
 {
 	if (!phoneNumber1 || !phoneNumber2) return NO;
-	
+
 	const char *number1 = phoneNumber1.UTF8String;
 	const char *number2 = phoneNumber2.UTF8String;
-	
+
 	const char *end1 = number1 + strlen(number1);
 	const char *end2 = number2 + strlen(number2);
 	const char *p1 = end1 - 1;
@@ -135,7 +136,7 @@ NSString *NSBase64Encode(const unsigned char *data, NSUInteger length, NSUIntege
 		'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
 		'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
 	};
-	
+
 	NSMutableString *result = [NSMutableString stringWithCapacity:length];
 	unsigned long ixtext = 0;
 	unsigned long lentext = length;
@@ -144,12 +145,12 @@ NSString *NSBase64Encode(const unsigned char *data, NSUInteger length, NSUIntege
 	short i = 0;
 	short charsonline = 0, ctcopy = 0;
 	unsigned long ix = 0;
-	
+
 	while (YES)
 	{
 		ctremaining = lentext - ixtext;
 		if (ctremaining <= 0) break;
-		
+
 		for (i = 0; i < 3; i++)
 		{
 			ix = ixtext + i;
@@ -162,13 +163,13 @@ NSString *NSBase64Encode(const unsigned char *data, NSUInteger length, NSUIntege
 				inbuf [i] = 0;
 			}
 		}
-		
+
 		outbuf [0] = (inbuf [0] & 0xFC) >> 2;
 		outbuf [1] = ((inbuf [0] & 0x03) << 4) | ((inbuf [1] & 0xF0) >> 4);
 		outbuf [2] = ((inbuf [1] & 0x0F) << 2) | ((inbuf [2] & 0xC0) >> 6);
 		outbuf [3] = inbuf [2] & 0x3F;
 		ctcopy = 4;
-		
+
 		switch (ctremaining)
 		{
 			case 1:
@@ -178,20 +179,20 @@ NSString *NSBase64Encode(const unsigned char *data, NSUInteger length, NSUIntege
 				ctcopy = 3;
 				break;
 		}
-		
+
 		for (i = 0; i < ctcopy; i++)
 		{
 			[result appendFormat:@"%c", c_baseTable[outbuf[i]]];
 		}
-		
+
 		for (i = ctcopy; i < 4; i++)
 		{
 			[result appendFormat:@"%c",'='];
 		}
-		
+
 		ixtext += 3;
 		charsonline += 4;
-		
+
 		if (lineLength > 0)
 		{
 			if (charsonline >= lineLength)
@@ -201,7 +202,7 @@ NSString *NSBase64Encode(const unsigned char *data, NSUInteger length, NSUIntege
 			}
 		}
 	}
-	
+
 	return result;
 }
 
@@ -209,7 +210,7 @@ NSString *NSBase64Encode(const unsigned char *data, NSUInteger length, NSUIntege
 NSData *NSBase64Decode(NSString *string)
 {
 	NSMutableData *mutableData = nil;
-	
+
 	if (string)
 	{
 		unsigned long ixtext = 0;
@@ -221,13 +222,13 @@ NSData *NSBase64Decode(NSString *string)
 		BOOL flendtext = NO;
 		NSData *base64Data = nil;
 		const unsigned char *base64data = nil;
-		
+
 		// Convert the string to ASCII data.
 		base64Data = [string dataUsingEncoding:NSASCIIStringEncoding];
 		base64data = (const unsigned char *)[base64Data bytes];
 		mutableData = [NSMutableData dataWithCapacity:[base64Data length]];
 		lentext = [base64Data length];
-		
+
 		while (YES)
 		{
 			if (ixtext >= lentext)
@@ -236,7 +237,7 @@ NSData *NSBase64Decode(NSString *string)
 			}
 			ch = base64data[ixtext++];
 			flignore = NO;
-			
+
 			if ((ch >= 'A') && (ch <= 'Z')) ch = ch - 'A';
 			else if ((ch >= 'a') && (ch <= 'z')) ch = ch - 'a' + 26;
 			else if ((ch >= '0') && (ch <= '9')) ch = ch - '0' + 52;
@@ -244,12 +245,12 @@ NSData *NSBase64Decode(NSString *string)
 			else if (ch == '=') flendtext = YES;
 			else if (ch == '/') ch = 63;
 			else flignore = YES;
-			
+
 			if (!flignore)
 			{
 				short ctcharsinbuf = 3;
 				BOOL flbreak = NO;
-				
+
 				if (flendtext)
 				{
 					if (!ixinbuf) break;
@@ -258,22 +259,22 @@ NSData *NSBase64Decode(NSString *string)
 					ixinbuf = 3;
 					flbreak = YES;
 				}
-				
+
 				inbuf[ixinbuf++] = ch;
-				
+
 				if (ixinbuf == 4)
 				{
 					outbuf[0] = (inbuf[0] << 2) | ((inbuf[1] & 0x30) >> 4);
 					outbuf[1] = ((inbuf[1] & 0x0F) << 4) | ((inbuf[2] & 0x3C) >> 2);
 					outbuf[2] = ((inbuf[2] & 0x03) << 6) | (inbuf[3] & 0x3F);
 					ixinbuf = 0;
-					
+
 					for (i = 0; i < ctcharsinbuf; i++)
 					{
 						[mutableData appendBytes:&outbuf[i] length:1];
 					}
 				}
-				
+
 				if (flbreak)
 				{
 					break;
@@ -281,7 +282,7 @@ NSData *NSBase64Decode(NSString *string)
 			}
 		}
 	}
-	
+
 	return mutableData;
 }
 
@@ -307,3 +308,5 @@ NSString *NSHmacSHA1String(NSString *text, NSString *secret)
 	CCHmac(kCCHmacAlgSHA1, [secretData bytes], [secretData length], [clearTextData bytes], [clearTextData length], result);
 	return NSBase64Encode(result, 20, 0);
 }
+
+#endif
