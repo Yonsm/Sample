@@ -1,9 +1,10 @@
 
 //
 @class PredictScrollView;
-@protocol PredictScrollViewDelegate <NSObject>
+@protocol PredictScrollViewDataSource <NSObject>
 @required
 - (UIView *)scrollView:(PredictScrollView *)scrollView viewForPage:(NSUInteger)index inFrame:(CGRect)frame;
+@optional
 - (void)scrollView:(PredictScrollView *)scrollView scrollToPage:(NSUInteger)index;
 @end
 
@@ -12,18 +13,20 @@
 @interface PredictScrollView : UIScrollView <UIScrollViewDelegate>
 {
 	BOOL _bIgnore;
+	id _retained_dataSource;
 }
 
-- (void)freePages:(BOOL)force;
-
 @property(nonatomic,assign) CGFloat gap;
-@property(nonatomic,readonly) __weak UIView **pages;
 @property(nonatomic,assign) BOOL noPredict;
+
+@property(nonatomic,readonly) NSMutableArray *pages;
 @property(nonatomic,assign) NSUInteger currentPage;
 @property(nonatomic,assign) NSUInteger numberOfPages;
-@property(nonatomic,weak) id<PredictScrollViewDelegate> delegate2;
+@property(nonatomic,weak) id<PredictScrollViewDataSource> dataSource;
 
 - (void)setCurrentPage:(NSUInteger)currentPage animated:(BOOL)animated;
+
+- (void)freePages:(BOOL)force;
 
 @end
 

@@ -56,15 +56,27 @@ NS_INLINE CGRect UIScreenBounds()
 }
 
 //
+NS_INLINE CGSize UIScreenSize()
+{
+	return UIScreenBounds().size;
+}
+
+//
 NS_INLINE CGFloat UIScreenWidth()
 {
-	return UIScreenBounds().size.width;
+	return UIScreenSize().width;
 }
 
 //
 NS_INLINE CGFloat UIScreenHeight()
 {
-	return UIScreenBounds().size.height;
+	return UIScreenSize().height;
+}
+
+//
+NS_INLINE CGRect UIAppFrame()
+{
+	return UIScreen.mainScreen.applicationFrame;
 }
 
 //
@@ -85,11 +97,6 @@ NS_INLINE BOOL UIIsPhone6()
 	return UIScreenWidth() > 320;
 }
 
-//
-NS_INLINE CGRect UIAppFrame()
-{
-	return UIScreen.mainScreen.applicationFrame;
-}
 
 #pragma mark - Application methods
 
@@ -316,6 +323,39 @@ NS_INLINE UIImage *UIImageWithColorAndSize(UIColor *color, CGSize size)
 NS_INLINE UIImage *UIImageWithColor(UIColor *color)
 {
 	return UIImageWithColorAndSize(color, CGSizeMake(1, 1));
+}
+
+//
+NS_INLINE UIImage *UIImageWithGradientColors(const CGFloat components[], size_t count, CGSize size)
+{
+	UIGraphicsBeginImageContext(size);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, components, NULL, count);
+	CGColorSpaceRelease(colorSpace);
+	CGContextDrawLinearGradient(context, gradient, CGPointZero, CGPointMake(0.0, size.height), kCGGradientDrawsBeforeStartLocation | kCGGradientDrawsAfterEndLocation);
+
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	return image;
+}
+
+NS_INLINE UIImage *UIImageMaskWithColor(UIImage *image, UIColor *color)
+{
+	UIGraphicsBeginImageContextWithOptions(image.size, NO, image.scale);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextTranslateCTM(context, 0, image.size.height);
+	CGContextScaleCTM(context, 1.0, -1.0);
+	CGContextSetBlendMode(context, kCGBlendModeNormal);
+	CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+	CGContextClipToMask(context, rect, image.CGImage);
+	[color setFill];
+	CGContextFillRect(context, rect);
+	UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return newImage;
 }
 
 //

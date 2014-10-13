@@ -24,12 +24,6 @@
 	return self;
 }
 
-// Destructor
-- (void)dealloc
-{
-	if (_pages) free(_pages);
-}
-
 //
 - (void)setGap:(CGFloat)gap
 {
@@ -43,25 +37,18 @@
 	_gap = gap;
 }
 
-//
-- (void)removeFromSuperview
-{
-	_delegate2 = nil;
-	[super removeFromSuperview];
-}
-
 // Remove cached pages
 - (void)freePages:(BOOL)force
 {
 	NSUInteger count = _numberOfPages;
 	for (NSUInteger i = 0; i < count; ++i)
 	{
-		if (_pages[i])
+		if (![_pages[i] isEqual:NSNull.null])
 		{
 			if ((i != _currentPage) && (force || ((i != _currentPage - 1) && (i != _currentPage + 1))))
 			{
 				[_pages[i] removeFromSuperview];
-				_pages[i] = nil;
+				_pages[i] = NSNull.null;
 			}
 		}
 	}
@@ -71,47 +58,42 @@
 - (void)loadPage:(NSUInteger)index
 {
 	if (index >= _numberOfPages) return;
-	if (_pages[index]) return;
+	if (![_pages[index] isEqual:NSNull.null]) return;
 	
 	CGRect frame = self.frame;
 	frame.origin.y = 0;
 	frame.origin.x = frame.size.width * index + _gap;
 	frame.size.width -= _gap * 2;
-	
-	_pages[index] = [_delegate2 scrollView:self viewForPage:index inFrame:frame];
-	(_pages[index]).autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-	[self addSubview:_pages[index]];
+
+	UIView *page = [_dataSource scrollView:self viewForPage:index inFrame:frame];
+	page.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+	[self addSubview:page];
+	_pages[index] = page;
 }
 
 //
 - (void)loadNearby
 {
-	@autoreleasepool
-	{
-		[self loadPage:_currentPage - 1];
-		[self loadPage:_currentPage + 1];
-	}
+	[self loadPage:_currentPage - 1];
+	[self loadPage:_currentPage + 1];
+	_retained_dataSource = nil;
 }
 
 //
-- (void)scheduledNearby
+- (void)loadCurrent
 {
-	@autoreleasepool
-	{
-		[self performSelectorOnMainThread:@selector(loadNearby) withObject:nil waitUntilDone:YES];
-	}
-}
-
-//
-- (void)loadPages
-{
-	[self freePages:NO];
+	//[self freePages:NO];
 	[self loadPage:_currentPage];
-	[_delegate2 scrollView:self scrollToPage:_currentPage];
-	
+
 	if (!_noPredict)
 	{
-		[NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(scheduledNearby) userInfo:nil repeats:NO];
+		_retained_dataSource = _dataSource;
+		[self performSelector:@selector(loadNearby) withObject:nil afterDelay:0.2];
+	}
+
+	if ([_dataSource respondsToSelector:@selector(scrollView:scrollToPage:)])
+	{
+		[_dataSource scrollView:self scrollToPage:_currentPage];
 	}
 }
 
@@ -128,7 +110,7 @@
 	}
 	else
 	{
-		[self loadPages];
+		[self loadCurrent];
 	}
 }
 
@@ -141,12 +123,21 @@
 //
 - (void)setNumberOfPages:(NSUInteger)numberOfPages
 {
-	if (_numberOfPages) UIRemoveSubviews(self);
+	if (_numberOfPages)
+	{
+		while (self.subviews.count)
+		{
+			UIView* child = self.subviews.lastObject;
+			[child removeFromSuperview];
+		}
+	}
+
 	_numberOfPages = numberOfPages;
-	
-	NSUInteger size = numberOfPages * sizeof(UIView *);
-	_pages = (__weak UIView **)realloc(_pages, size);
-	memset(_pages, 0, size);
+	_pages = [NSMutableArray arrayWithCapacity:numberOfPages];
+	for (int i  = 0; i < numberOfPages; i++)
+	{
+		[_pages addObject:NSNull.null];
+	}
 }
 
 
@@ -183,7 +174,7 @@
 	if ((_currentPage != currentPage) && (currentPage < _numberOfPages))
 	{
 		_currentPage = currentPage;
-		[self loadPages];
+		[self loadCurrent];
 	}
 }
 
@@ -198,8 +189,8 @@
 {
 	self = [super initWithFrame:frame];
 	
-	frame.origin.y = frame.size.height - 10;
-	frame.size.height = 10;
+	frame.origin.y = frame.size.height - 20;
+	frame.size.height = 20;
 	_pageCtrl = [[UIPageControl alloc] initWithFrame:frame];
 	//_pageCtrl.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	_pageCtrl.numberOfPages = 0;
@@ -240,10 +231,10 @@
 }
 
 //
-- (void)loadPages
+- (void)loadCurrent
 {
 	_pageCtrl.currentPage = self.currentPage;
-	[super loadPages];
+	[super loadCurrent];
 }
 
 //
