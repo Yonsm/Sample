@@ -11,6 +11,7 @@
 #endif
 
 // Log Helper
+#ifndef _Log
 #if defined(DEBUG) || defined(TEST)
 #ifdef _LOG_TO_FILE
 #define _Log(s, ...)	{NSString *str = [NSString stringWithFormat:s, ##__VA_ARGS__]; FILE *fp = fopen("/tmp/NSUtil.log", "a"); if (fp) {fprintf(fp, "[%s] %s\n", NSProcessInfo.processInfo.processName.UTF8String, str.UTF8String); fclose(fp);}}
@@ -27,21 +28,26 @@
 #define _LogObj(o)		((void) 0)
 #define _LogStack()		((void) 0)
 #endif
+#endif
 
 // Suppress warning
+#ifndef _SuppressPerformSelectorLeakWarning
 #define _SuppressPerformSelectorLeakWarning(Stuff) \
 _Pragma("clang diagnostic push") \
 _Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
 Stuff; \
 _Pragma("clang diagnostic pop")
+#endif
 
 // Extend an object
+#ifndef _EXObject
 #define _EXObject(object, ref, type, name)	\
 @interface object##_##name : object	\
 @property(nonatomic,ref) type name;	\
 @end	\
 @implementation object##_##name	\
 @end
+#endif
 
 // Localized String
 #undef NSLocalizedString

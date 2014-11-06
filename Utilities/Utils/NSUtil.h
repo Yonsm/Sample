@@ -150,7 +150,7 @@ NS_INLINE NSString *NSFormatThousandsAmount(NSString *amount)
 
 	NSMutableString *ret = [NSMutableString stringWithString:amount];
 	NSRange range = [amount rangeOfString:@"."];
-	int i = (range.location != NSNotFound) ? range.location : ret.length;
+	NSUInteger i = (range.location != NSNotFound) ? range.location : ret.length;
 	for (i -= 3; i > 0; i -= 3)
 	{
 		[ret insertString:@"," atIndex:i];
@@ -306,20 +306,20 @@ NS_INLINE NSString *NSStringMask(NSString *str, NSInteger location, NSInteger le
 //
 NS_INLINE NSString *NSUrlEscape(NSString *string)
 {
-	return (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-																				 (CFStringRef)string,
-																				 NULL,
-																				 CFSTR("!*'();:@&=+$,/?%#[]"),
-																				 kCFStringEncodingUTF8);
+	return CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+																	 (CFStringRef)string,
+																	 NULL,
+																	 CFSTR("!*'();:@&=+$,/?%#[]"),
+																	 kCFStringEncodingUTF8));
 }
 
 //
 NS_INLINE NSString *NSUrlUnEscape(NSString *string)
 {
-	return (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
+	return CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
 																								 (CFStringRef)string,
 																								 CFSTR(""),
-																								 kCFStringEncodingUTF8);
+																								 kCFStringEncodingUTF8));
 }
 
 //
@@ -381,7 +381,7 @@ NS_INLINE NSString *NSUrlQueryFromArray(NSArray *params)
 NS_INLINE NSString *NSUUIDString()
 {
 	CFUUIDRef uuid = CFUUIDCreate(NULL);
-	NSString *string = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuid);
+	NSString *string = CFBridgingRelease(CFUUIDCreateString(NULL, uuid));
 	CFRelease(uuid);
 	return string;
 }

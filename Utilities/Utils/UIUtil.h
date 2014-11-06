@@ -50,6 +50,12 @@ NS_INLINE CGFloat UIScreenScale()
 }
 
 //
+NS_INLINE CGFloat UIThinLineHeight()
+{
+	return (UIScreenScale() > 1) ? 0.5 : 1;
+}
+
+//
 NS_INLINE CGRect UIScreenBounds()
 {
 	return UIScreen.mainScreen.bounds;
@@ -142,17 +148,20 @@ NS_INLINE BOOL UICanOpenUrl(NSString *url)
 }
 
 //
+#ifndef _AlertView
+#define _AlertView UIAlertView
+#endif
 NS_INLINE BOOL UIOpenUrl(NSString *url)
 {
-	if (url == nil) return NO;
+	if (url.length == 0) return NO;
 	BOOL ret = [UIApplication.sharedApplication openURL:[NSURL URLWithString:url]];
 	if (ret == NO)
 	{
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not open", @"无法打开")
-															message:url
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"关闭")
-												  otherButtonTitles:nil];
+		_AlertView *alertView = [[_AlertView alloc] initWithTitle:[url hasPrefix:@"tel"] ? NSLocalizedString(@"Could not make call", @"无法拨打电话") : NSLocalizedString(@"Could not open", @"无法打开")
+														  message:url
+														 delegate:nil
+												cancelButtonTitle:NSLocalizedString(@"OK", @"确定")
+												otherButtonTitles:nil];
 		[alertView show];
 	}
 	return ret;
@@ -179,14 +188,14 @@ NS_INLINE BOOL UIMakeCall(NSString *number, BOOL direct)
 {
 	NSString *url = [NSString stringWithFormat:(direct ? @"tel://%@" : @"telprompt://%@"), [number stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	NSURL *URL = [NSURL URLWithString:url];
-
+	
 	BOOL ret = [UIApplication.sharedApplication openURL:URL];
 	if (ret == NO)
 	{
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not make call", @"无法拨打电话")
 															message:number
 														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"关闭")
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"确定")
 												  otherButtonTitles:nil];
 		[alertView show];
 	}
@@ -309,13 +318,13 @@ NS_INLINE UIImage *UIImageWithColorAndSize(UIColor *color, CGSize size)
 {
 	UIGraphicsBeginImageContext(size);
 	CGContextRef context = UIGraphicsGetCurrentContext();
-
+	
 	CGContextSetFillColorWithColor(context, [color CGColor]);
 	CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
-
+	
 	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
-
+	
 	return image;
 }
 
@@ -330,15 +339,15 @@ NS_INLINE UIImage *UIImageWithGradientColors(const CGFloat components[], size_t 
 {
 	UIGraphicsBeginImageContext(size);
 	CGContextRef context = UIGraphicsGetCurrentContext();
-
+	
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, components, NULL, count);
 	CGColorSpaceRelease(colorSpace);
 	CGContextDrawLinearGradient(context, gradient, CGPointZero, CGPointMake(0.0, size.height), kCGGradientDrawsBeforeStartLocation | kCGGradientDrawsAfterEndLocation);
-
+	
 	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
-
+	
 	return image;
 }
 
@@ -376,13 +385,13 @@ NS_INLINE BOOL UINormalizePngFile(NSString *dst, NSString *src)
 	{
 		[[NSFileManager defaultManager] createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
 	}
-
+	
 	UIImage *image = [UIImage imageWithContentsOfFile:src];
 	if (image == nil) return NO;
-
+	
 	NSData *data = UIImagePNGRepresentation(image);
 	if (data == nil) return NO;
-
+	
 	return [data writeToFile:dst atomically:NO];
 }
 
@@ -410,6 +419,24 @@ NS_INLINE UIView *UIViewWithColor(CGRect frame, UIColor *color)
 }
 
 //
+#ifndef kSeparatorColor
+#define kSeparatorColor [UIColor colorWithRed:200/255.0 green:199/255.0 blue:194/255.0 alpha:1]
+#endif
+NS_INLINE UIView *UILineWithFrame(CGRect frame)
+{
+	frame.size.height = UIThinLineHeight();
+	UIView *line = [[UIView alloc] initWithFrame:frame];
+	line.backgroundColor = kSeparatorColor;
+	return line;
+}
+
+//
+NS_INLINE UIView *UILineWithWidth(CGFloat width)
+{
+	return UILineWithFrame(CGRectMake(0, 0, width, 0));
+}
+
+//
 NS_INLINE void UIRemoveSubviews(UIView *view)
 {
 	while (view.subviews.count)
@@ -426,7 +453,7 @@ NS_INLINE UIView *UIFindFirstResponder(UIView *view)
 	{
 		return view;
 	}
-
+	
 	for (UIView *subview in view.subviews)
 	{
 		UIView* ret = UIFindFirstResponder(subview);
@@ -456,7 +483,7 @@ NS_INLINE UIView *UIFindSubview(UIView *view, Class viewClass)
 			}
 		}
 	}
-
+	
 	return nil;
 }
 
@@ -504,10 +531,10 @@ NS_INLINE UIImageView *UIShowSplash(UIView *view, CGFloat duration)
 	splashView.image = [UIImage imageNamed:UIIsPad() ? @"Default@iPad.png" : (UIIsPhone5() ? @"Default-568h.png" : @"Default.png")];
 	splashView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[UIKeyWindow() addSubview:splashView];
-
+	
 	//
 	view.alpha = 0;
-
+	
 	[UIView animateWithDuration:duration animations:^()
 	 {
 		 view.alpha = 1;
@@ -516,7 +543,7 @@ NS_INLINE UIImageView *UIShowSplash(UIView *view, CGFloat duration)
 	 {
 		 [splashView removeFromSuperview];
 	 }];
-
+	
 	return splashView;
 }
 
@@ -536,7 +563,7 @@ NS_INLINE void UIShakeAnimating(UIView *view, void (^completion)(BOOL finished))
 			  [UIView animateWithDuration:0.1 animations:^()
 			   {
 				   view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -20, 0);
-
+				   
 			   } completion:^(BOOL finished)
 			   {
 				   [UIView animateWithDuration:0.1 animations:^()
@@ -544,7 +571,7 @@ NS_INLINE void UIShakeAnimating(UIView *view, void (^completion)(BOOL finished))
 						view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
 					} completion:completion];
 			   }];
-
+			  
 		  }];
 	 }];
 }
@@ -559,7 +586,7 @@ NS_INLINE UILabel *UILabelWithFrame(CGRect frame, NSString *text, UIFont* font, 
 	label.backgroundColor = [UIColor clearColor];
 	label.font = font;
 	label.text = text;
-
+	
 	return label;
 }
 
@@ -568,9 +595,9 @@ NS_INLINE UILabel *UILabelAtPoint(CGPoint point, CGFloat width, NSString *text, 
 {
 	CGSize size = [text sizeWithFont:font
 				   constrainedToSize:CGSizeMake(width, 1000)];
-
+	
 	CGRect frame = CGRectMake(point.x, point.y, width, ceil(size.height));
-
+	
 	UILabel *label = UILabelWithFrame(frame, text, font, color);
 	label.numberOfLines = 0;
 	return label;
@@ -581,7 +608,7 @@ NS_INLINE UILabel *UILabelAtPoint(CGPoint point, CGFloat width, NSString *text, 
 //
 NS_INLINE UIAlertView *UIAlertViewWithTitleAndMessage(NSString *title, NSString *message)
 {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Done", @"完成") otherButtonTitles:nil];
+	UIAlertView *alertView = [[_AlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"确定") otherButtonTitles:nil];
 	[alertView show];
 	return alertView;
 }
@@ -624,12 +651,12 @@ NS_INLINE void UILogIndentString(NSUInteger indent, NSString *str)
 NS_INLINE void UILogController(UIViewController *controller, NSUInteger indent)
 {
 	UILogIndentString(indent, [NSString stringWithFormat:@"<Controller Description=\"%@\">", [controller description]]);
-
+	
 	if (controller.presentedViewController)
 	{
 		UILogController(controller, indent + 1);
 	}
-
+	
 	if ([controller isKindOfClass:[UINavigationController class]])
 	{
 		for (UIViewController *child in ((UINavigationController *)controller).viewControllers)
@@ -644,13 +671,13 @@ NS_INLINE void UILogController(UIViewController *controller, NSUInteger indent)
 		{
 			UILogController(child, indent + 1);
 		}
-
+		
 		if (tabBarController.moreNavigationController)
 		{
 			UILogController(tabBarController.moreNavigationController, indent + 1);
 		}
 	}
-
+	
 	UILogIndentString(indent, @"</Controller>");
 }
 
@@ -659,14 +686,14 @@ NS_INLINE void UILogView(UIView *view, NSUInteger indent)
 {
 	CGRect frame = [view.superview convertRect:view.frame toView:nil];
 	NSString *rect = NSStringFromCGRect(frame);
-
+	
 	UILogIndentString(indent, [NSString stringWithFormat:@"<View%@ Description=\"%@\">", rect, [view description]]);
-
+	
 	for (UIView *child in view.subviews)
 	{
 		UILogView(child, indent + 1);
 	}
-
+	
 	UILogIndentString(indent, @"</View>");
 }
 
@@ -676,7 +703,7 @@ NS_INLINE void UILogConstraints(UIView *view)
 	NSArray *constraints = view.constraints;
 	_LogObj(view);
 	_LogObj(constraints);
-
+	
 	const static NSString *_attributes[] =
 	{
 		@"None",
@@ -692,7 +719,7 @@ NS_INLINE void UILogConstraints(UIView *view)
 		@"CenterY",
 		@"Baseline",
 	};
-
+	
 	for (NSLayoutConstraint *constraint in constraints)
 	{
 		NSLog(@"{%.0f: %@/%@ %c %@/%@ %.1f%@}",
