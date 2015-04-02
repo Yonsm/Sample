@@ -1,5 +1,6 @@
 
 #import <UIKit/UIKit.h>
+#import "NSUtil.h"
 
 //
 @interface UIDevice (uniqueIdentifier)
@@ -52,7 +53,7 @@ NS_INLINE CGFloat UIScreenScale()
 //
 NS_INLINE CGFloat UIThinLineHeight()
 {
-	return (UIScreenScale() > 1) ? 0.5 : 1;
+	return 1 / UIScreenScale();
 }
 
 //
@@ -596,7 +597,7 @@ NS_INLINE UILabel *UILabelAtPoint(CGPoint point, CGFloat width, NSString *text, 
 	CGSize size = [text sizeWithFont:font
 				   constrainedToSize:CGSizeMake(width, 1000)];
 	
-	CGRect frame = CGRectMake(point.x, point.y, width, ceil(size.height));
+	CGRect frame = CGRectMake(point.x, point.y, width, ceilf(size.height));
 	
 	UILabel *label = UILabelWithFrame(frame, text, font, color);
 	label.numberOfLines = 0;
@@ -632,115 +633,3 @@ NS_INLINE UITableViewCellAccessoryType UITableViewCellAccessoryButton()
 {
 	return UIIsOS7() ? UITableViewCellAccessoryDetailButton : UITableViewCellAccessoryDetailDisclosureButton;
 }
-
-#pragma mark - Log Extension methods
-
-//
-NS_INLINE void UILogIndentString(NSUInteger indent, NSString *str)
-{
-	NSString *log = @"";
-	for (NSUInteger i = 0; i < indent; i++)
-	{
-		log = [log stringByAppendingString:@"\t"];
-	}
-	log = [log stringByAppendingString:str];
-	NSLog(@"%@", log);
-}
-
-// Log controller and sub-controllers
-NS_INLINE void UILogController(UIViewController *controller, NSUInteger indent)
-{
-	UILogIndentString(indent, [NSString stringWithFormat:@"<Controller Description=\"%@\">", [controller description]]);
-	
-	if (controller.presentedViewController)
-	{
-		UILogController(controller, indent + 1);
-	}
-	
-	if ([controller isKindOfClass:[UINavigationController class]])
-	{
-		for (UIViewController *child in ((UINavigationController *)controller).viewControllers)
-		{
-			UILogController(child, indent + 1);
-		}
-	}
-	else if ([controller isKindOfClass:[UITabBarController class]])
-	{
-		UITabBarController *tabBarController = (UITabBarController *)controller;
-		for (UIViewController *child in tabBarController.viewControllers)
-		{
-			UILogController(child, indent + 1);
-		}
-		
-		if (tabBarController.moreNavigationController)
-		{
-			UILogController(tabBarController.moreNavigationController, indent + 1);
-		}
-	}
-	
-	UILogIndentString(indent, @"</Controller>");
-}
-
-// Log view and subviews
-NS_INLINE void UILogView(UIView *view, NSUInteger indent)
-{
-	CGRect frame = [view.superview convertRect:view.frame toView:nil];
-	NSString *rect = NSStringFromCGRect(frame);
-	
-	UILogIndentString(indent, [NSString stringWithFormat:@"<View%@ Description=\"%@\">", rect, [view description]]);
-	
-	for (UIView *child in view.subviews)
-	{
-		UILogView(child, indent + 1);
-	}
-	
-	UILogIndentString(indent, @"</View>");
-}
-
-//
-NS_INLINE void UILogConstraints(UIView *view)
-{
-	NSArray *constraints = view.constraints;
-	_LogObj(view);
-	_LogObj(constraints);
-	
-	const static NSString *_attributes[] =
-	{
-		@"None",
-		@"Left",
-		@"Right",
-		@"Top",
-		@"Bottom",
-		@"Leading",
-		@"Trailing",
-		@"Width",
-		@"Height",
-		@"CenterX",
-		@"CenterY",
-		@"Baseline",
-	};
-	
-	for (NSLayoutConstraint *constraint in constraints)
-	{
-		NSLog(@"{%.0f: %@/%@ %c %@/%@ %.1f%@}",
-			  constraint.priority,
-			  NSStringFromClass([constraint.firstItem class]),
-			  _attributes[constraint.firstAttribute],
-			  (constraint.relation > 0) ? '>' : ((constraint.relation < 0) ? '<' : '='),
-			  NSStringFromClass([constraint.secondItem class]),
-			  _attributes[constraint.secondAttribute],
-			  constraint.constant,
-			  ((constraint.multiplier == 1.0) ? @"" : [NSString stringWithFormat:@"x%.1f", constraint.multiplier])
-			  );
-	}
-}
-
-#if defined(DEBUG) || defined(TEST)
-#define _LogView(v)			UIULogView(v)
-#define _LogController(c)	UIULogController(c)
-#define _LogConstraints(v)	UIULogConstraints(v)
-#else
-#define _LogView(v)			((void) 0)
-#define _LogConstraints(v)	((void) 0)
-#define _LogController(c)	((void) 0)
-#endif
