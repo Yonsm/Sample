@@ -81,23 +81,17 @@ NS_INLINE NSString *NSDocumentSubPath(NSString *file)
 //
 NS_INLINE NSString *NSCachePath()
 {
-//	return NSDocumentSubPath(@"Cache");
-	return [NSUserDirectoryPath(NSCachesDirectory) stringByAppendingPathComponent:@"Cache"];
+	return NSUserDirectoryPath(NSCachesDirectory);
 }
 
 //
 NS_INLINE NSString *NSCacheSubPath(NSString *file)
 {
-	NSString *dir = NSCachePath();
-	if (![NSFileManager.defaultManager fileExistsAtPath:dir])
-	{
-		[NSFileManager.defaultManager createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
-	}
-	return [dir stringByAppendingPathComponent:file];
+	return [NSCachePath() stringByAppendingPathComponent:file];
 }
 
 //
-NS_INLINE NSString *NSUrlPath(NSString *url)
+NS_INLINE NSString *NSUrlToFilename(NSString *url)
 {
 	unichar chars[256];
 	NSRange range = {0, MIN(url.length, 256)};
@@ -125,7 +119,14 @@ NS_INLINE NSString *NSUrlPath(NSString *url)
 //
 NS_INLINE NSString *NSCacheUrlPath(NSString *url)
 {
-	return NSCacheSubPath(NSUrlPath(url));
+	NSString *dir = NSCacheSubPath(@"UrlCaches");
+	if (![NSFileManager.defaultManager fileExistsAtPath:dir])
+	{
+		[NSFileManager.defaultManager createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
+	}
+
+	NSString *filename = NSUrlToFilename(url);
+	return [dir stringByAppendingPathComponent:filename];
 }
 
 //
@@ -169,6 +170,29 @@ NS_INLINE NSString *NSFormatNumber(NSNumber *number, NSNumberFormatterStyle styl
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 	[formatter setNumberStyle:style];
 	return [formatter stringFromNumber:number];
+}
+
+// Convert byte size to string
+NS_INLINE NSString *NSFormatByteSize(long long size)
+{
+	const long long GB = 1024 * 1024 * 1024;
+	const long long MB = 1024 * 1024;
+	const long long KB = 1024;
+
+	NSString *formatSize = @"";
+	if (size > GB)
+	{
+		formatSize = [NSString stringWithFormat:@"%.01fG", (double)size / GB];
+	} else if (size > MB)
+	{
+		formatSize = [NSString stringWithFormat:@"%.01fM", (double)size / MB];
+	} else if (size > KB)
+	{
+		formatSize = [NSString stringWithFormat:@"%.01fK", (double)size / KB];
+	} else {
+		formatSize = [NSString stringWithFormat:@"%lldB", size];
+	}
+	return formatSize;
 }
 
 // Convert date to string
@@ -322,9 +346,9 @@ NS_INLINE NSString *NSUrlEscape(NSString *string)
 NS_INLINE NSString *NSUrlUnEscape(NSString *string)
 {
 	return CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
-																								 (CFStringRef)string,
-																								 CFSTR(""),
-																								 kCFStringEncodingUTF8));
+																					 (CFStringRef)string,
+																					 CFSTR(""),
+																					 kCFStringEncodingUTF8));
 }
 
 //
