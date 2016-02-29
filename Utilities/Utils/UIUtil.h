@@ -330,6 +330,33 @@ NS_INLINE UIImage *UIImageWithColorAndSize(UIColor *color, CGSize size)
 }
 
 //
+NS_INLINE UIImage *UIImageWithRoundedRect(UIColor *color, CGSize size)
+{
+	UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	//CGContextSaveGState(context);
+
+	//绘制圆角矩形
+	UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, size.width,size.height) byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(size.height, size.height)];
+	CGContextSetFillColorWithColor(context, color.CGColor);
+
+	[path fill];
+	CGContextAddPath(context, path.CGPath);
+	CGContextClip(context);
+
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	//CGContextRestoreGState(context);
+	UIGraphicsEndImageContext();
+	return image;
+}
+
+//
+NS_INLINE UIImage *UIImageWithBundleAndName(NSString *bundle, NSString *name)
+{
+	return [UIImage imageNamed:[NSString stringWithFormat:@"%@.bundle/%@", bundle, name]];
+}
+
+//
 NS_INLINE UIImage *UIImageWithColor(UIColor *color)
 {
 	return UIImageWithColorAndSize(color, CGSizeMake(1, 1));
