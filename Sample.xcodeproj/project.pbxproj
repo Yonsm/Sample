@@ -16,7 +16,6 @@
 		24259EBC194AB36B000FF8A9 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E3B194AB36B000FF8A9 /* HPGrowingTextView.m */; };
 		24259EBD194AB36B000FF8A9 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E3D194AB36B000FF8A9 /* HPTextViewInternal.m */; };
 		24259EBE194AB36B000FF8A9 /* Main.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E3F194AB36B000FF8A9 /* Main.m */; };
-		24259EBF194AB36B000FF8A9 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24259E41194AB36B000FF8A9 /* libMobClickLibrary.a */; };
 		24259EC0194AB36B000FF8A9 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E46194AB36B000FF8A9 /* MWCaptionView.m */; };
 		24259EC1194AB36B000FF8A9 /* MWPhoto.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24259E48194AB36B000FF8A9 /* MWPhoto.mm */; };
 		24259EC2194AB36B000FF8A9 /* MWPhotoBrowser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24259E4A194AB36B000FF8A9 /* MWPhotoBrowser.mm */; };
@@ -24,14 +23,8 @@
 		24259EC4194AB36B000FF8A9 /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E4F194AB36B000FF8A9 /* MWTapDetectingView.m */; };
 		24259EC5194AB36B000FF8A9 /* MWZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E51194AB36B000FF8A9 /* MWZoomingScrollView.m */; };
 		24259EC6194AB36B000FF8A9 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E53194AB36B000FF8A9 /* SDWebImageDecoder.m */; };
-		24259EC9194AB36B000FF8A9 /* libUMFeedback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24259E5C194AB36B000FF8A9 /* libUMFeedback.a */; };
-		24259ECA194AB36B000FF8A9 /* UMContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E5E194AB36B000FF8A9 /* UMContactViewController.m */; };
 		24259ECB194AB36B000FF8A9 /* UMContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24259E5F194AB36B000FF8A9 /* UMContactViewController.xib */; };
-		24259ECC194AB36B000FF8A9 /* UMEGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E61194AB36B000FF8A9 /* UMEGORefreshTableHeaderView.m */; };
 		24259ECD194AB36B000FF8A9 /* UMFeedback.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 24259E62194AB36B000FF8A9 /* UMFeedback.bundle */; };
-		24259ECE194AB36B000FF8A9 /* UMFeedbackTableViewCellLeft.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E65194AB36B000FF8A9 /* UMFeedbackTableViewCellLeft.m */; };
-		24259ECF194AB36B000FF8A9 /* UMFeedbackTableViewCellRight.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E67194AB36B000FF8A9 /* UMFeedbackTableViewCellRight.m */; };
-		24259ED0194AB36B000FF8A9 /* UMFeedbackViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24259E69194AB36B000FF8A9 /* UMFeedbackViewController.mm */; };
 		24259ED1194AB36B000FF8A9 /* UMFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24259E6A194AB36B000FF8A9 /* UMFeedbackViewController.xib */; };
 		24259ED3194AB36B000FF8A9 /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E73194AB36B000FF8A9 /* iVersion.m */; };
 		24259ED4194AB36B000FF8A9 /* NetworkUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24259E75194AB36B000FF8A9 /* NetworkUtil.mm */; };
@@ -47,7 +40,6 @@
 		24259EDF194AB36B000FF8A9 /* KBCustomTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E8D194AB36B000FF8A9 /* KBCustomTextField.m */; };
 		24259EE0194AB36B000FF8A9 /* NullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E8F194AB36B000FF8A9 /* NullView.m */; };
 		24259EE1194AB36B000FF8A9 /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E91194AB36B000FF8A9 /* ODRefreshControl.m */; };
-		24259EE2194AB36B000FF8A9 /* PredictScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E93194AB36B000FF8A9 /* PredictScrollView.m */; };
 		24259EE3194AB36B000FF8A9 /* PullView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E95194AB36B000FF8A9 /* PullView.m */; };
 		24259EE4194AB36B000FF8A9 /* SegmentLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E97194AB36B000FF8A9 /* SegmentLabel.m */; };
 		24259EE5194AB36B000FF8A9 /* ToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24259E99194AB36B000FF8A9 /* ToastView.m */; };
@@ -83,6 +75,7 @@
 		246A334718683DBF00903EF4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 246A334618683DBF00903EF4 /* SystemConfiguration.framework */; };
 		246A334918683DE000903EF4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 246A334818683DE000903EF4 /* MessageUI.framework */; };
 		246A334B18683DF300903EF4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 246A334A18683DF300903EF4 /* MediaPlayer.framework */; };
+		246BEA921ED42F9900AE0402 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24259E41194AB36B000FF8A9 /* libMobClickLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -169,8 +162,6 @@
 		24259E8F194AB36B000FF8A9 /* NullView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullView.m; sourceTree = "<group>"; };
 		24259E90194AB36B000FF8A9 /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
 		24259E91194AB36B000FF8A9 /* ODRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRefreshControl.m; sourceTree = "<group>"; };
-		24259E92194AB36B000FF8A9 /* PredictScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PredictScrollView.h; sourceTree = "<group>"; };
-		24259E93194AB36B000FF8A9 /* PredictScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PredictScrollView.m; sourceTree = "<group>"; };
 		24259E94194AB36B000FF8A9 /* PullView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullView.h; sourceTree = "<group>"; };
 		24259E95194AB36B000FF8A9 /* PullView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullView.m; sourceTree = "<group>"; };
 		24259E96194AB36B000FF8A9 /* SegmentLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentLabel.h; sourceTree = "<group>"; };
@@ -293,8 +284,7 @@
 				246A334918683DE000903EF4 /* MessageUI.framework in Frameworks */,
 				246A334718683DBF00903EF4 /* SystemConfiguration.framework in Frameworks */,
 				246A334318683DA800903EF4 /* libz.dylib in Frameworks */,
-				24259EC9194AB36B000FF8A9 /* libUMFeedback.a in Frameworks */,
-				24259EBF194AB36B000FF8A9 /* libMobClickLibrary.a in Frameworks */,
+				246BEA921ED42F9900AE0402 /* libMobClickLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,8 +436,6 @@
 				24259E8F194AB36B000FF8A9 /* NullView.m */,
 				24259E90194AB36B000FF8A9 /* ODRefreshControl.h */,
 				24259E91194AB36B000FF8A9 /* ODRefreshControl.m */,
-				24259E92194AB36B000FF8A9 /* PredictScrollView.h */,
-				24259E93194AB36B000FF8A9 /* PredictScrollView.m */,
 				24259E94194AB36B000FF8A9 /* PullView.h */,
 				24259E95194AB36B000FF8A9 /* PullView.m */,
 				24259E96194AB36B000FF8A9 /* SegmentLabel.h */,
@@ -684,6 +672,11 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Yonsm;
+				TargetAttributes = {
+					246A318F18682C2D00903EF4 = {
+						DevelopmentTeam = 97Y98KA82X;
+					};
+				};
 			};
 			buildConfigurationList = 246A318B18682C2D00903EF4 /* Build configuration list for PBXProject "Sample" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -765,22 +758,17 @@
 				24259ED6194AB36B000FF8A9 /* NullObject.m in Sources */,
 				24259EDE194AB36B000FF8A9 /* KBAutoScrollView.m in Sources */,
 				24259EE1194AB36B000FF8A9 /* ODRefreshControl.m in Sources */,
-				24259EE2194AB36B000FF8A9 /* PredictScrollView.m in Sources */,
 				24259EC2194AB36B000FF8A9 /* MWPhotoBrowser.mm in Sources */,
 				24259EC6194AB36B000FF8A9 /* SDWebImageDecoder.m in Sources */,
 				24259F3C194AB539000FF8A9 /* RootController.m in Sources */,
-				24259ECE194AB36B000FF8A9 /* UMFeedbackTableViewCellLeft.m in Sources */,
 				24259EC0194AB36B000FF8A9 /* MWCaptionView.m in Sources */,
 				24259EB2194AB36B000FF8A9 /* MessageComposer.m in Sources */,
-				24259ED0194AB36B000FF8A9 /* UMFeedbackViewController.mm in Sources */,
-				24259ECA194AB36B000FF8A9 /* UMContactViewController.m in Sources */,
 				24259EEE194AB36B000FF8A9 /* unzip.c in Sources */,
 				24259EDF194AB36B000FF8A9 /* KBCustomTextField.m in Sources */,
 				24259EEF194AB36B000FF8A9 /* zip.c in Sources */,
 				24259ED4194AB36B000FF8A9 /* NetworkUtil.mm in Sources */,
 				24259F46194AB539000FF8A9 /* SelectBox.m in Sources */,
 				24259EC5194AB36B000FF8A9 /* MWZoomingScrollView.m in Sources */,
-				24259ECC194AB36B000FF8A9 /* UMEGORefreshTableHeaderView.m in Sources */,
 				24259EBD194AB36B000FF8A9 /* HPTextViewInternal.m in Sources */,
 				24259EE3194AB36B000FF8A9 /* PullView.m in Sources */,
 				240F9A4519CBD499000A9B64 /* WebBrowser.m in Sources */,
@@ -792,7 +780,6 @@
 				24259EE5194AB36B000FF8A9 /* ToastView.m in Sources */,
 				24259EBE194AB36B000FF8A9 /* Main.m in Sources */,
 				24259F48194AB539000FF8A9 /* SelectSheet.m in Sources */,
-				24259ECF194AB36B000FF8A9 /* UMFeedbackTableViewCellRight.m in Sources */,
 				24259EDC194AB36B000FF8A9 /* CopyableLabel.m in Sources */,
 				24259EE4194AB36B000FF8A9 /* SegmentLabel.m in Sources */,
 				24259F31194AB539000FF8A9 /* AppDelegate.m in Sources */,
@@ -916,6 +903,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = 97Y98KA82X;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
 				INFOPLIST_FILE = Resources/Info.plist;
@@ -925,6 +913,7 @@
 					"$(PROJECT_DIR)/Utilities/UMFeedback",
 					"$(PROJECT_DIR)/Utilities/WeChat",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.yonsm.Sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -935,6 +924,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = 97Y98KA82X;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
 				INFOPLIST_FILE = Resources/Info.plist;
@@ -944,6 +934,7 @@
 					"$(PROJECT_DIR)/Utilities/UMFeedback",
 					"$(PROJECT_DIR)/Utilities/WeChat",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.yonsm.Sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
