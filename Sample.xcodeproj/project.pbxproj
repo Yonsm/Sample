@@ -269,6 +269,7 @@
 		246A334618683DBF00903EF4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		246A334818683DE000903EF4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		246A334A18683DF300903EF4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		24A6D4B61F0F27AE00ED64A2 /* Location.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -638,6 +639,7 @@
 				246A3243186838ED00903EF4 /* DefaultPad.png */,
 				246A3244186838ED00903EF4 /* InfoPlist.strings */,
 				246A3246186838ED00903EF4 /* Localizable.strings */,
+				24A6D4B61F0F27AE00ED64A2 /* Location.gpx */,
 				246A3248186838ED00903EF4 /* GenString */,
 			);
 			path = Resources;
