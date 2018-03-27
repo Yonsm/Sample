@@ -23,6 +23,17 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 @synthesize state;
 
 //
++ (instancetype)sharedHTTPServer
+{
+	static HTTPServer *_sharedHTTPServer = nil;
+	if (_sharedHTTPServer == nil)
+	{
+		_sharedHTTPServer = [[HTTPServer alloc] init];
+	}
+	return _sharedHTTPServer;
+}
+
+//
 // init
 //
 // Set the initial state and allocate the responseHandlers and incomingRequests

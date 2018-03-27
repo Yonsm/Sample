@@ -26,6 +26,7 @@ typedef enum
 @property (nonatomic, readonly, retain) NSError *lastError;
 @property (readonly, assign) HTTPServerState state;
 
++ (instancetype)sharedHTTPServer;
 - (void)start:(unsigned short)port;
 - (void)stop;
 
